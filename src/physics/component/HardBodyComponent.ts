@@ -20,7 +20,7 @@ export type HardBodyComponent = BaseComponent<"HardBodyComponent", HardBodyPrope
 	readonly restingTime: Seconds;
 	readonly pendingForces: { location: Point2; force: Vector2 }[];
 
-	_body: any | null;
+	_body: { } | null;
 }>;
 
 const Recentre = (position: Point2, shape: Shape2) => {

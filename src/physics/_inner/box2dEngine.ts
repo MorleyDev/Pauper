@@ -8,13 +8,15 @@ import { createPhysicsEcsEvents } from "../reducer/ecs-events.func";
 import { createPhysicsReducer } from "../reducer/physics-body.reducer";
 import { PhysicsUpdateResult } from "../update.model";
 import { Collision } from "../collision.model";
+import { box2d, Box2dBodyRef, Box2dBodyId } from "../../engine/box2d";
+import { Vector2 } from "../../maths/vector.maths";
 
 const applyForce = (component: HardBodyComponent): HardBodyComponent => {
 	if (component.pendingForces.length === 0) {
 		return component;
 	} else {
 		for (const f of component.pendingForces) {
-			BOX2D_ApplyForce(component._body, f.location.x, f.location.y, f.force.x, f.force.y);
+			(component._body as Box2dBodyRef).applyForce(f.location, f.force);
 		}
 		return {
 			...component,
@@ -23,43 +25,22 @@ const applyForce = (component: HardBodyComponent): HardBodyComponent => {
 	}
 };
 
-const bodyEntityIdMap: { [body: number]: EntityId | undefined } = { };
+const bodyEntityIdMap: { [body: number]: EntityId | undefined } = {};
 
 const attachHardBodyToPhysics = (entityId: EntityId, component: HardBodyComponent): HardBodyComponent => {
 	const shape = Shape2.add(component.shape, component.position);
-	if (Array.isArray(shape)) {
-		if (shape.length === 3) {
-			component._body = BOX2D_CreateBody_Tri(shape[0].x, shape[0].y, shape[1].x, shape[1].y, shape[2].x, shape[2].y, false, component.density, 1, component.elasticity);
-		} else {
-			// TODO: return Bodies.fromVertices(centre.x, centre.y, [shape.map(({ x, y }) => Vector.create(x, y))], props);
-		}
-	} else if (Rectangle.is(shape)) {
-		component._body = BOX2D_CreateBody_Box(shape.x, shape.y, shape.width, shape.height, false, component.density, 1, component.elasticity);
-	} else if (Circle.is(shape)) {
-		component._body = BOX2D_CreateBody_Ball(shape.x, shape.y, shape.radius, false, component.density, 1, component.elasticity);
-	} else {
-		throw new Error();
-	}
-	bodyEntityIdMap[component._body] = entityId;
+	component._body = box2d.createBody(shape, {
+		density: component.density,
+		elasticity: component.elasticity,
+		static: false
+	});
+	bodyEntityIdMap[(component._body as Box2dBodyRef).id] = entityId;
 	return component;
 };
 
 const attachStaticBodyToPhysics = (entityId: EntityId, component: StaticBodyComponent): StaticBodyComponent => {
 	const shape = Shape2.add(component.shape, component.position);
-	if (Array.isArray(shape)) {
-		if (shape.length === 3) {
-			component._body = BOX2D_CreateBody_Tri(shape[0].x, shape[0].y, shape[1].x, shape[1].y, shape[2].x, shape[2].y, true, 0, 1, 0);
-		} else {
-			throw new Error();
-			// TODO: return Bodies.fromVertices(centre.x, centre.y, [shape.map(({ x, y }) => Vector.create(x, y))], props);
-		}
-	} else if (Rectangle.is(shape)) {
-		component._body = BOX2D_CreateBody_Box(shape.x, shape.y, shape.width, shape.height, true, 0, 1, 0);
-	} else if (Circle.is(shape)) {
-		component._body = BOX2D_CreateBody_Ball(shape.x, shape.y, shape.radius, true, 0, 1, 0);
-	} else {
-		throw new Error();
-	}
+	component._body = box2d.createBody(shape, { static: true });
 	bodyEntityIdMap[component._body] = entityId;
 	return component;
 };
@@ -68,32 +49,28 @@ const syncComponent = (hardbody: HardBodyComponent): HardBodyComponent => {
 	if (hardbody._body == null) {
 		return hardbody;
 	}
+	const ref = (hardbody._body as Box2dBodyRef);
+	const def = ref.definition();
 
-	const body = BOX2D_GetBody(hardbody._body);
-	const speedSquared = body.velocityX * body.velocityX + body.velocityY * body.velocityY;
-	const angularSpeedSquared = body.angularVelocity * body.angularVelocity;
+	const speedSquared = Vector2.magnitudeSquared(def.velocity);
+	const angularSpeedSquared = def.angularVelocity * def.angularVelocity;
 	const motion = speedSquared + angularSpeedSquared;
 	const isResting = motion < 1;
 
 	return {
 		...hardbody,
 		isResting,
-		position: {
-			x: body.positionX,
-			y: body.positionY
-		},
-		velocity: {
-			x: body.velocityX,
-			y: body.velocityY,
-		},
-		angularVelocity: body.angularVelocity,
-		rotation: body.angle
+		position: def.position,
+		velocity: def.velocity,
+		angularVelocity: def.angularVelocity,
+		rotation: def.rotation
 	};
 };
 
 const detachPhysics = (id: EntityId, component: HardBodyComponent | StaticBodyComponent) => {
-	BOX2D_DestroyBody(component._body);
-	bodyEntityIdMap[component._body] = undefined;
+	const ref = (component._body as Box2dBodyRef);
+	ref.destroy();
+	bodyEntityIdMap[component._body.id] = undefined;
 };
 
 export const box2dPhysicsEcsEvents: EntityComponentReducerEvents = createPhysicsEcsEvents(
@@ -104,28 +81,19 @@ export const box2dPhysicsEcsEvents: EntityComponentReducerEvents = createPhysics
 );
 
 export const box2dAdvancePhysicsEngine = (deltaTime: Seconds): PhysicsUpdateResult => {
-	BOX2D_Advance(deltaTime);
-
-	const collisionStarts: Collision[] = Array( BOX2D_GetCollisionStartCount() );
-	for (let i = 0; i < collisionStarts.length; ++i) {
-		const collision = BOX2D_PullCollisionStart()!;
-		collisionStarts[i] = {
-			a: bodyEntityIdMap[collision.a]!,
-			b: bodyEntityIdMap[collision.b]!,
-		};
-	}
-
-	const collisionEnds: Collision[] = Array( BOX2D_GetCollisionEndCount() );
-	for (let i = 0; i < collisionEnds.length; ++i) {
-		const collision = BOX2D_PullCollisionEnd()!;
-		collisionEnds[i] = {
-			a: bodyEntityIdMap[collision.a]!,
-			b: bodyEntityIdMap[collision.b]!,
-		};
-	}
-	return { collisionStarts, collisionEnds };
+	const result = box2d.advance(deltaTime);
+	return {
+		collisionStarts: result.collision.starts.map(({ a, b }) => ({
+			a: bodyEntityIdMap[a]!,
+			b: bodyEntityIdMap[b]!
+		})),
+		collisionEnds: result.collision.ends.map(({ a, b }) => ({
+			a: bodyEntityIdMap[a]!,
+			b: bodyEntityIdMap[b]!
+		}))
+	};
 };
 
 export const box2dPhysicsReducer = createPhysicsReducer(box2dAdvancePhysicsEngine, syncComponent, applyForce);
 
-BOX2D_SetGravity(0.0, 980.0);
+box2d.setGravity(Vector2(0.0, 980.0));

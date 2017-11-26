@@ -47,129 +47,136 @@ declare function SFML_PauseMusic(name: string): void;
 declare function SFML_StopMusic(name: string): void;
 
 declare const SFML_Events: {
-	Closed: 0,
-	Resized: 1,
-	LostFocus: 2,
-	GainedFocus: 3,
-	TextEntered: 4,
-	KeyPressed: 5,
-	KeyReleased: 6,
-	MouseWheelScrolled: 8,
-	MouseButtonPressed: 9,
-	MouseButtonReleased: 10,
-	MouseMoved: 11,
-	MouseEntered: 12,
-	MouseLeft: 13,
-	JoystickButtonPressed: 14,
-	JoystickButtonReleased: 15,
-	JoystickMoved: 16,
-	JoystickConnected: 17,
-	JoystickDisconnected: 18,
-	TouchBegan: 19,
-	TouchMoved: 20,
-	TouchEnded: 21,
-	SensorChanged: 22
+	readonly Closed: 0;
+	readonly Resized: 1;
+	readonly LostFocus: 2;
+	readonly GainedFocus: 3;
+	readonly TextEntered: 4;
+	readonly KeyPressed: 5;
+	readonly KeyReleased: 6;
+	readonly MouseWheelScrolled: 8;
+	readonly MouseButtonPressed: 9;
+	readonly MouseButtonReleased: 10;
+	readonly MouseMoved: 11;
+	readonly MouseEntered: 12;
+	readonly MouseLeft: 13;
+	readonly JoystickButtonPressed: 14;
+	readonly JoystickButtonReleased: 15;
+	readonly JoystickMoved: 16;
+	readonly JoystickConnected: 17;
+	readonly JoystickDisconnected: 18;
+	readonly TouchBegan: 19;
+	readonly TouchMoved: 20;
+	readonly TouchEnded: 21;
+	readonly SensorChanged: 22;
 };
+
+declare const SFML_Mouse: {
+	readonly LeftButton: 0;
+	readonly MiddleButton: 1;
+	readonly RightButton: 2;
+};
+
 declare const SFML_Keys: {
-	A: 0,
-	B: 1,
-	C: 2,
-	D: 3,
-	E: 4,
-	F: 5,
-	G: 6,
-	H: 7,
-	I: 8,
-	J: 9,
-	K: 10,
-	L: 11,
-	M: 12,
-	N: 13,
-	O: 14,
-	P: 15,
-	Q: 16,
-	R: 17,
-	S: 18,
-	T: 19,
-	U: 20,
-	V: 21,
-	W: 22,
-	X: 23,
-	Y: 24,
-	Z: 25,
-	Num0: 26,
-	Num1: 27,
-	Num2: 28,
-	Num3: 29,
-	Num4: 30,
-	Num5: 31,
-	Num6: 32,
-	Num7: 33,
-	Num8: 34,
-	Num9: 35,
-	Escape: 36,
-	LControl: 37,
-	LShift: 38,
-	LAlt: 39,
-	LSystem: 40,
-	RControl: 40,
-	RShift: 41,
-	RAlt: 42,
-	RSystem: 43,
-	Menu: 44,
-	LBracket: 45,
-	RBracket: 46,
-	SemiColon: 47,
-	Comma: 48,
-	Period: 49,
-	Quote: 50,
-	Slash: 51,
-	BackSlash: 52,
-	Tilde: 53,
-	Equal: 54,
-	Dash: 55,
-	Space: 56,
-	Return: 57,
-	BackSpace: 58,
-	Tab: 59,
-	PageUp: 60,
-	PageDown: 61,
-	End: 62,
-	Home: 63,
-	Insert: 64,
-	Delete: 65,
-	Add: 66,
-	Subtract: 67,
-	Multiply: 68,
-	Divide: 69,
-	Left: 70,
-	Right: 71,
-	Up: 72,
-	Down: 73,
-	Numpad0: 74,
-	Numpad1: 75,
-	Numpad2: 76,
-	Numpad3: 77,
-	Numpad4: 78,
-	Numpad5: 79,
-	Numpad6: 80,
-	Numpad7: 81,
-	Numpad8: 82,
-	Numpad9: 83,
-	F1: 84,
-	F2: 85,
-	F3: 86,
-	F4: 87,
-	F5: 88,
-	F6: 89,
-	F7: 90,
-	F8: 91,
-	F9: 92,
-	F10: 93,
-	F11: 94,
-	F12: 95,
-	F13: 96,
-	F14: 97,
-	F15: 98,
-	Pause: 99
+	readonly A: 0;
+	readonly B: 1;
+	readonly C: 2;
+	readonly D: 3;
+	readonly E: 4;
+	readonly F: 5;
+	readonly G: 6;
+	readonly H: 7;
+	readonly I: 8;
+	readonly J: 9;
+	readonly K: 10;
+	readonly L: 11;
+	readonly M: 12;
+	readonly N: 13;
+	readonly O: 14;
+	readonly P: 15;
+	readonly Q: 16;
+	readonly R: 17;
+	readonly S: 18;
+	readonly T: 19;
+	readonly U: 20;
+	readonly V: 21;
+	readonly W: 22;
+	readonly X: 23;
+	readonly Y: 24;
+	readonly Z: 25;
+	readonly Num0: 26;
+	readonly Num1: 27;
+	readonly Num2: 28;
+	readonly Num3: 29;
+	readonly Num4: 30;
+	readonly Num5: 31;
+	readonly Num6: 32;
+	readonly Num7: 33;
+	readonly Num8: 34;
+	readonly Num9: 35;
+	readonly Escape: 36;
+	readonly LControl: 37;
+	readonly LShift: 38;
+	readonly LAlt: 39;
+	readonly LSystem: 40;
+	readonly RControl: 40;
+	readonly RShift: 41;
+	readonly RAlt: 42;
+	readonly RSystem: 43;
+	readonly Menu: 44;
+	readonly LBracket: 45;
+	readonly RBracket: 46;
+	readonly SemiColon: 47;
+	readonly Comma: 48;
+	readonly Period: 49;
+	readonly Quote: 50;
+	readonly Slash: 51;
+	readonly BackSlash: 52;
+	readonly Tilde: 53;
+	readonly Equal: 54;
+	readonly Dash: 55;
+	readonly Space: 56;
+	readonly Return: 57;
+	readonly BackSpace: 58;
+	readonly Tab: 59;
+	readonly PageUp: 60;
+	readonly PageDown: 61;
+	readonly End: 62;
+	readonly Home: 63;
+	readonly Insert: 64;
+	readonly Delete: 65;
+	readonly Add: 66;
+	readonly Subtract: 67;
+	readonly Multiply: 68;
+	readonly Divide: 69;
+	readonly Left: 70;
+	readonly Right: 71;
+	readonly Up: 72;
+	readonly Down: 73;
+	readonly Numpad0: 74;
+	readonly Numpad1: 75;
+	readonly Numpad2: 76;
+	readonly Numpad3: 77;
+	readonly Numpad4: 78;
+	readonly Numpad5: 79;
+	readonly Numpad6: 80;
+	readonly Numpad7: 81;
+	readonly Numpad8: 82;
+	readonly Numpad9: 83;
+	readonly F1: 84;
+	readonly F2: 85;
+	readonly F3: 86;
+	readonly F4: 87;
+	readonly F5: 88;
+	readonly F6: 89;
+	readonly F7: 90;
+	readonly F8: 91;
+	readonly F9: 92;
+	readonly F10: 93;
+	readonly F11: 94;
+	readonly F12: 95;
+	readonly F13: 96;
+	readonly F14: 97;
+	readonly F15: 98;
+	readonly Pause: 99;
 };

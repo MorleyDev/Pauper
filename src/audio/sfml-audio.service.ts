@@ -1,25 +1,25 @@
-import { SoundEffectAsset, MusicAsset } from "../assets/asset.model";
+import { SoundEffectAsset, MusicAsset, NamedMusicAsset, NamedSoundEffectAsset } from "../assets/asset.model";
 import { AudioService } from "./audio.service";
+import { sfml } from "../engine/sfml";
 
 export class SfmlAudioService implements AudioService {
 	public playMusic(audio: MusicAsset, volume: number, loop: boolean): AudioService {
-		SFML_PlayMusic(audio.name, volume, loop);
+		sfml.audio.music.play(audio as NamedMusicAsset, { volume, loop });
 		return this;
 	}
 
 	public pauseMusic(audio: MusicAsset): AudioService {
-		SFML_PauseMusic(audio.name);
+		sfml.audio.music.pause(audio as NamedMusicAsset);
 		return this;
 	}
 
 	public stopMusic(audio: MusicAsset): AudioService {
-		SFML_StopMusic(audio.name);
+		sfml.audio.music.stop(audio as NamedMusicAsset);
 		return this;
 	}
 
 	public playSoundEffect(audio: SoundEffectAsset, volume: number): this {
-		const soundEffect = audio as { readonly name: string; readonly src: string };
-		SFML_PlaySound(soundEffect.name, volume);
+		sfml.audio.sound.play(audio as NamedSoundEffectAsset, volume);
 		return this;
 	}
 }
