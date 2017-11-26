@@ -1,4 +1,4 @@
-type SfmlEvent
+type SFML_Event
 	= { type: 0 | 1 | 2 | 3 | 12 | 13; }
 	| { type: 4 | 5 | 6; parameters: [number /*SFML_Keys*/] }
 	| { type: 8; parameters: [number /*delta*/] }
@@ -20,7 +20,7 @@ declare let SFML_OnLoadSound: (id: number) => void;
 
 declare function SFML_LoadMusic(name: string, src: string): { readonly name: string; readonly src: string };
 
-declare function SFML_FlushEvents(handler: (event: SfmlEvent) => void): void;
+declare function SFML_FlushEvents(handler: (event: SFML_Event) => void): void;
 
 declare function SFML_Clear(r: number, g: number, b: number): void;
 declare function SFML_Fill_Circle(x: number, y: number, radius: number, r: number, g: number, b: number, a: number): void;
