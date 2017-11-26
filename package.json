@@ -1,8 +1,7 @@
 {
   "name": "@morleydev/pauper",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "typecheck": "tsc -p . --noEmit",
     "compile": "tsc -p .",
@@ -11,7 +10,8 @@
     "test-dot": "ts-node ./src/test.ts | tap-dot",
     "coverage": "tsc -p . && tap dist/**/*.spec.js --coverage html"
   },
-  "author": "",
+  "repository": "https://github.com/MorleyDev/Pauper.git",
+  "author": "Jason Morley <morleydev.co.uk@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "8.0.50",
