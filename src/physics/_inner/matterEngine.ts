@@ -44,7 +44,7 @@ const applyForce = (component: HardBodyComponent): HardBodyComponent => {
 		return component;
 	} else {
 		for (const f of component.pendingForces) {
-			Body.applyForce(component._body!, Vector.create(f.location.x, f.location.y), Vector.create(f.force.x, f.force.y));
+			Body.applyForce((component._body as any)!, Vector.create(f.location.x, f.location.y), Vector.create(f.force.x, f.force.y));
 		}
 		return {
 			...component,
@@ -64,7 +64,7 @@ const attachHardBodyToPhysics = (entityId: EntityId, component: HardBodyComponen
 		name: entityId,
 		isStatic: false
 	});
-	World.add(matterJsPhysicsEngine.world, component._body!);
+	World.add(matterJsPhysicsEngine.world, (component._body as any)!);
 	return component;
 };
 
@@ -83,22 +83,23 @@ const syncComponent = (hardbody: HardBodyComponent): HardBodyComponent => {
 		return hardbody;
 	}
 
-	const motion = hardbody._body.speed * hardbody._body.speed + hardbody._body.angularSpeed * hardbody._body.angularSpeed;
+	const body = hardbody._body as any;
+	const motion = body.speed * body.speed + body.angularSpeed * body.angularSpeed;
 	const isResting = motion < 1;
 
 	return {
 		...hardbody,
 		isResting,
 		position: {
-			x: hardbody._body.position.x,
-			y: hardbody._body.position.y
+			x: body.position.x,
+			y: body.position.y
 		},
 		velocity: {
-			x: hardbody._body.velocity.x,
-			y: hardbody._body.velocity.y,
+			x: body.velocity.x,
+			y: body.velocity.y,
 		},
-		angularVelocity: hardbody._body.angularVelocity,
-		rotation: hardbody._body.angle
+		angularVelocity: body.angularVelocity,
+		rotation: body.angle
 	};
 };
 
