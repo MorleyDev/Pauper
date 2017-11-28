@@ -8,7 +8,7 @@ import { createPhysicsEcsEvents } from "../reducer/ecs-events.func";
 import { createPhysicsReducer } from "../reducer/physics-body.reducer";
 import { PhysicsUpdateResult } from "../update.model";
 import { Collision } from "../collision.model";
-import { box2d, Box2dBodyRef, Box2dBodyId } from "../../engine/box2d";
+import { box2d, Box2dBodyId } from "../../engine/box2d";
 import { Vector2 } from "../../maths/vector.maths";
 
 const applyForce = (component: HardBodyComponent): HardBodyComponent => {
@@ -16,7 +16,7 @@ const applyForce = (component: HardBodyComponent): HardBodyComponent => {
 		return component;
 	} else {
 		for (const f of component.pendingForces) {
-			(component._body as Box2dBodyRef).applyForce(f.location, f.force);
+			box2d.applyForce(component._body as Box2dBodyId, f.location, f.force);
 		}
 		return {
 			...component,
@@ -34,7 +34,7 @@ const attachHardBodyToPhysics = (entityId: EntityId, component: HardBodyComponen
 		elasticity: component.elasticity,
 		static: false
 	});
-	bodyEntityIdMap[(component._body as Box2dBodyRef).id] = entityId;
+	bodyEntityIdMap[(component._body as Box2dBodyId)] = entityId;
 	return component;
 };
 
@@ -49,8 +49,8 @@ const syncComponent = (hardbody: HardBodyComponent): HardBodyComponent => {
 	if (hardbody._body == null) {
 		return hardbody;
 	}
-	const ref = (hardbody._body as Box2dBodyRef);
-	const def = ref.definition();
+	const ref = (hardbody._body as Box2dBodyId);
+	const def = box2d.getDefinition(ref);
 
 	const speedSquared = Vector2.magnitudeSquared(def.velocity);
 	const angularSpeedSquared = def.angularVelocity * def.angularVelocity;
@@ -68,8 +68,8 @@ const syncComponent = (hardbody: HardBodyComponent): HardBodyComponent => {
 };
 
 const detachPhysics = (id: EntityId, component: HardBodyComponent | StaticBodyComponent) => {
-	const ref = (component._body as Box2dBodyRef);
-	ref.destroy();
+	const ref = (component._body as Box2dBodyId);
+	box2d.destroyBody(ref);
 	bodyEntityIdMap[component._body.id] = undefined;
 };
 

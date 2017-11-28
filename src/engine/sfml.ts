@@ -113,9 +113,7 @@ export const sfml = {
 				}
 			});
 			return result;
-		},
-		events: SFML_Events,
-		keys: SFML_Keys,
+		}
 	},
 	audio: {
 		sound: {

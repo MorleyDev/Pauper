@@ -24,32 +24,9 @@ export type CollisionRecord = {
 
 export type Box2dBodyId = number;
 
-export class Box2dBodyRef {
-	constructor(public id: Box2dBodyId) {
-	}
-
-	public applyForce(location: Point2, force: Vector2): void {
-		BOX2D_ApplyForce(this.id, location.x, location.y, force.x, force.y);
-	}
-
-	public definition(): BodyDefinition {
-		const def = BOX2D_GetBody(this.id);
-		return {
-			angularVelocity: def.angularVelocity,
-			position: Point2(def.positionX, def.positionY),
-			rotation: def.angle,
-			velocity: Vector2(def.velocityX, def.velocityY)
-		};
-	}
-
-	public destroy(): void {
-		BOX2D_DestroyBody(this.id);
-	}
-}
-
 export const box2d = {
 	setGravity: ({ x, y }: Vector2) => BOX2D_SetGravity(x, y),
-	createBody: (shape: Shape2, props?: Partial<BodyProperties>): Box2dBodyRef => {
+	createBody: (shape: Shape2, props?: Partial<BodyProperties>): Box2dBodyId => {
 		const defaultProps: BodyProperties = {
 			density: 1,
 			friction: 1,
@@ -59,22 +36,34 @@ export const box2d = {
 		const pprops = props != null ? { ...defaultProps, ...props } : defaultProps;
 		if (Array.isArray(shape)) {
 			if (shape.length === 3) {
-				const id = BOX2D_CreateBody_Tri(shape[0].x, shape[0].y, shape[1].x, shape[1].y, shape[2].x, shape[2].y, pprops.static, pprops.density, pprops.friction, pprops.elasticity);
-				return new Box2dBodyRef(id);
+				return BOX2D_CreateBody_Tri(shape[0].x, shape[0].y, shape[1].x, shape[1].y, shape[2].x, shape[2].y, pprops.static, pprops.density, pprops.friction, pprops.elasticity);
 			} else {
 				// TODO
 				throw new Error();
 			}
 		} else if (Rectangle.is(shape)) {
-			const id = BOX2D_CreateBody_Box(shape.x, shape.y, shape.width, shape.height, pprops.static, pprops.density, pprops.friction, pprops.elasticity);
-			return new Box2dBodyRef(id);
+			return BOX2D_CreateBody_Box(shape.x, shape.y, shape.width, shape.height, pprops.static, pprops.density, pprops.friction, pprops.elasticity);
 		} else if (Circle.is(shape)) {
-			const id = BOX2D_CreateBody_Ball(shape.x, shape.y, shape.radius, pprops.static, pprops.density, pprops.friction, pprops.elasticity);
-			return new Box2dBodyRef(id);
+			return BOX2D_CreateBody_Ball(shape.x, shape.y, shape.radius, pprops.static, pprops.density, pprops.friction, pprops.elasticity);
 		} else {
 			// TODO
 			throw new Error();
 		}
+	},
+	getDefinition: (id: number): BodyDefinition => {
+		const def = BOX2D_GetBody(id);
+		return {
+			angularVelocity: def.angularVelocity,
+			position: Point2(def.positionX, def.positionY),
+			rotation: def.angle,
+			velocity: Vector2(def.velocityX, def.velocityY)
+		};
+	},
+	applyForce: (id: number, location: Point2, force: Vector2) => {
+		BOX2D_ApplyForce(id, location.x, location.y, force.x, force.y);
+	},
+	destroyBody: (id: number) => {
+		BOX2D_DestroyBody(id);
 	},
 	advance: (deltaTime: Seconds) => {
 		BOX2D_Advance(deltaTime);

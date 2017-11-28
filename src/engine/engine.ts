@@ -1,45 +1,56 @@
 import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
 
-/*
-declare function UTILITY_GetUnique(): number;
-*/
-
 const receiveHotReload$ = new Subject<string>();
-ENGINE_Reloaded = msg => receiveHotReload$.next(msg);
-ENGINE_Reloading = () => ENGINE_Stash("{}");
+if (typeof ENGINE_Reloaded !== "undefined") {
+	ENGINE_Reloaded = msg => receiveHotReload$.next(msg);
+}
+if (typeof ENGINE_Reloading !== "undefined") {
+	ENGINE_Reloading = () => ENGINE_Stash("{}");
+}
 
 export const engine = {
 	hotreload: {
-		onStash: (msg: () => string) => ENGINE_Reloading = () => ENGINE_Stash(msg()),
+		onStash: typeof ENGINE_Stash !== "undefined"
+			? (msg: () => string) => ENGINE_Reloading = () => ENGINE_Stash(msg())
+			: (msg: () => string) => { },
 		receive$: receiveHotReload$ as Observable<string>,
 	}
 };
 
 const workerJoins: ((name: string) => void)[] = [];
-WORKER_Join = (name: string) => workerJoins.forEach(w => w(name));
+if (typeof WORKER_Join !== "undefined") {
+	WORKER_Join = (name: string) => workerJoins.forEach(w => w(name));
+}
 
 const workerReceive$ = new Subject<string>();
-WORKER_Receive = msg => workerReceive$.next(msg);
+if (typeof WORKER_Receive !== "undefined") {
+	WORKER_Receive = msg => workerReceive$.next(msg);
+}
 
 export const worker = {
-	send: (msg: string) => WORKER_Emit(msg),
+	send: typeof WORKER_Emit !== "undefined" ? (msg: string) => WORKER_Emit(msg) : (msg: string) => { },
 	receive$: workerReceive$ as Observable<string>,
 	onJoin: (handler: (name: string) => void) => workerJoins.push(handler)
 };
 
 const secondaryJoins: ((name: string) => void)[] = [];
-SECONDARY_Join = (name: string) => secondaryJoins.forEach(w => w(name));
+if (typeof SECONDARY_Join !== "undefined") {
+	SECONDARY_Join = (name: string) => secondaryJoins.forEach(w => w(name));
+}
 
 const secondaryReceive$ = new Subject<string>();
-SECONDARY_Receive = msg => secondaryReceive$.next(msg);
+if (typeof SECONDARY_Receive !== "undefined") {
+	SECONDARY_Receive = msg => secondaryReceive$.next(msg);
+}
 
 export const secondary = {
-	send: (msg: string) => SECONDARY_Emit(msg),
+	send: typeof SECONDARY_Emit !== "undefined" ? (msg: string) => SECONDARY_Emit(msg) : (msg: string) => { },
 	receive$: secondaryReceive$ as Observable<string>,
 	onJoin: (handler: (name: string) => void) => secondaryJoins.push(handler)
 };
 
+let nextUniqueId = 0;
 export const utility = {
-	unique: UTILITY_GetUnique
+	unique: typeof UTILITY_GetUnique !== "undefined" ? UTILITY_GetUnique : () => nextUniqueId++
 };
