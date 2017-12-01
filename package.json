@@ -22,7 +22,7 @@
     "typescript": "2.6.1"
   },
   "dependencies": {
-    "@morleydev/functional-pipe": "^1.0.2",
+    "@morleydev/functional-pipe": "^1.1.0",
     "@types/howler": "^2.0.5",
     "@types/matter-js": "^0.9.33",
     "howler": "^2.0.5",

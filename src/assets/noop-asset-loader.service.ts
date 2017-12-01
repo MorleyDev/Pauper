@@ -2,9 +2,6 @@ import { AssetLoader } from "./asset-loader.service";
 import { ImageAsset, SoundEffectAsset, MusicAsset } from "./asset.model";
 
 export class NoOpAssetLoader implements AssetLoader {
-	private images: { [id: string]: ImageAsset | undefined } = {};
-	private audio: { [id: string]: SoundEffectAsset | undefined } = {};
-
 	public loadFont(id: string, path?: string): Promise<void> {
 		return Promise.resolve();
 	}
@@ -31,5 +28,15 @@ export class NoOpAssetLoader implements AssetLoader {
 
 	public loadMusic(id: string, path: string): Promise<MusicAsset> {
 		return Promise.resolve({ } as any);
+	}
+
+	public getJson<T>(id: string, path?: string, notFound?: T): T | undefined {
+		return notFound;
+	}
+
+	public loadJson<T>(id: string, path: string, notFound?: T): Promise<T> {
+		return notFound != null
+			? Promise.resolve(notFound)
+			: Promise.reject(new Error("NoOp cannot load json, provide a sensible default"));
 	}
 }

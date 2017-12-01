@@ -7,6 +7,7 @@ export class WebAssetLoader implements AssetLoader {
 	private images: { [id: string]: ImageAsset | undefined } = {};
 	private soundeffects: { [id: string]: SoundEffectAsset | undefined } = {};
 	private music: { [id: string]: MusicAsset | undefined } = {};
+	private jsons: { [id: string]: any | undefined } = {};
 
 	public loadFont(id: string, path?: string): Promise<void> {
 		return Promise.resolve();
@@ -72,6 +73,39 @@ export class WebAssetLoader implements AssetLoader {
 		} else {
 			const howl = await loadAudioFromUrl(path);
 			return this.music[id] = { howl, name: id };
+		}
+	}
+
+	public getJson<T>(id: string, path?: string, notFound?: T): T | undefined {
+		const asset = this.jsons[id];
+		if (asset != null) {
+			return asset;
+		} else {
+			if (notFound != null) {
+				this.jsons[id] = notFound;
+			}
+			return notFound;
+		}
+	}
+
+	public async loadJson<T>(id: string, path: string, notFound?: T): Promise<T> {
+		const asset = this.jsons[id];
+		if (asset != null) {
+			return asset;
+		}
+
+		const result = await fetch(path);
+		if (result.status < 200 || result.status >= 300) {
+			if (notFound != null) {
+				this.jsons[id] = notFound;
+				return notFound;
+			} else {
+				throw new Error(`Could not find json object ${id} (${path})`);
+			}
+		} else {
+			const body = await result.json();
+			this.jsons[id] = body;
+			return body;
 		}
 	}
 }

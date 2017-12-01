@@ -11,4 +11,7 @@ export abstract class AssetLoader {
 
 	public abstract getMusic(id: string, path?: string): MusicAsset;
 	public abstract loadMusic(id: string, path: string): Promise<MusicAsset>;
+
+	public abstract getJson<T>(id: string, path?: string, notFound?: T): T | undefined;
+	public abstract loadJson<T>(id: string, path: string, notFound?: T): Promise<T>;
 }
