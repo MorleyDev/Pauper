@@ -2,6 +2,7 @@ import { Point2Type } from "../point/point.model.type";
 import * as is from "./triangle.model.is";
 import * as lines from "./triangle.model.lines";
 import * as overlaps from "./triangle.model.overlap";
+import * as lineTo from "./triangle.model.lineTo";
 import { Triangle2Type } from "./triangle.model.type";
 
 export type Triangle2 = Triangle2Type;
@@ -11,6 +12,7 @@ export const Triangle2 = Object.assign(
 	{
 		...is,
 		...overlaps,
-		...lines
+		...lines,
+		...lineTo
 	}
 );

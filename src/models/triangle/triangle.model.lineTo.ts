@@ -42,6 +42,6 @@ export function lineTriangle2ToTriangle2(lhs: Triangle2Type, rhs: Triangle2Type)
 export function lineTriangleToPoint2(lhs: Triangle2Type, rhs: Point2Type): Line2Type {
 	return $$(lhs)
 		.$(linesOfTriangle)
-		.$(map(line => lineLine2ToPoint2(lhs, rhs)))
+		.$(map(line => lineLine2ToPoint2(line, rhs)))
 		.$$(findShortestLine);
 }

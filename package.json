@@ -14,12 +14,12 @@
   "author": "Jason Morley <morleydev.co.uk@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "8.0.50",
-    "tap": "10.7.3",
+    "@types/node": "8.0.53",
+    "tap": "11.0.0",
     "tap-dot": "1.0.5",
     "ts-node": "3.3.0",
     "tslint": "5.8.0",
-    "typescript": "2.6.1"
+    "typescript": "next"
   },
   "dependencies": {
     "@morleydev/functional-pipe": "^1.1.0",

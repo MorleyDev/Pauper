@@ -20,12 +20,12 @@ export const Shape2 = {
 	collision(lhs: Shape2, rhs: Shape2): boolean {
 		if (Line2.is(lhs)) {
 			return Line2.intersects(lhs, rhs);
+		} else if (Triangle2.is(lhs)) {
+			return Triangle2.overlaps(lhs, rhs);
 		} else if (Circle.is(lhs)) {
 			return Circle.overlaps(lhs, rhs);
 		} else if (Rectangle.is(lhs)) {
 			return Rectangle.overlaps(lhs, rhs);
-		} else if (Triangle2.is(lhs)) {
-			return Triangle2.overlaps(lhs, rhs);
 		} else {
 			return false;
 		}
@@ -79,7 +79,7 @@ export const Shape2 = {
 		if (Line2.is(lhs)) {
 			return Line2.lineTo(lhs, rhs);
 		} else if (Triangle2.is(lhs)) {
-			return Line2.lineTo(lhs, rhs);
+			return Triangle2.lineTo(lhs, rhs);
 		} else if (Circle.is(lhs)) {
 			return Circle.lineTo(lhs, rhs);
 		} else if (Rectangle.is(lhs)) {
@@ -88,12 +88,12 @@ export const Shape2 = {
 			const flip = ([a, b]: Line2): Line2 => [b, a];
 			if (Line2.is(rhs)) {
 				return flip(Shape2.lineTo(rhs, lhs));
+			} else if (Triangle2.is(rhs)) {
+				return flip(Triangle2.lineTo(rhs, lhs));
 			} else if (Circle.is(rhs)) {
 				return flip(Circle.lineTo(rhs, lhs));
 			} else if (Rectangle.is(rhs)) {
 				return flip(Rectangle.lineTo(rhs, lhs));
-			} else if (Triangle2.is(rhs)) {
-				return flip(Line2.lineTo(rhs, lhs));
 			} else if (Point2.is(rhs)) {
 				return [lhs, rhs];
 			} else {

@@ -38,7 +38,7 @@ export const Fill = (dst: Shape2, colour: RGB | RGBA): Fill => [FrameCommandType
 export type Stroke = [FrameCommandType.Stroke, Shape2, RGB | RGBA];
 export const Stroke = (dst: Shape2, colour: RGB | RGBA): Stroke => [FrameCommandType.Stroke, dst, colour];
 
-export type Blit = [FrameCommandType.Blit, string, Point2] | [FrameCommandType.Blit, string, Rectangle, Rectangle];
+export type Blit = [FrameCommandType.Blit, string, Point2 | Rectangle] | [FrameCommandType.Blit, string, Point2 | Rectangle, Rectangle];
 export const Blit = (image: string, dst: Point2 | Rectangle, src?: Rectangle): Blit => src != null ? [FrameCommandType.Blit, image, dst, src] : [FrameCommandType.Blit, image, dst];
 
 export type RenderTarget = [FrameCommandType.RenderTarget, Rectangle, FrameCollection, Point2 | undefined];
