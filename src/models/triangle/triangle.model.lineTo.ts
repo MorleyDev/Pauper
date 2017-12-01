@@ -36,14 +36,12 @@ export function lineTriangle2ToTriangle2(lhs: Triangle2Type, rhs: Triangle2Type)
 
 	return $$(leftLines)
 		.$(flatMap((lline: Line2Type) => map((rline: Line2Type) => lineLine2ToLine2(lline, rline))(rightLines)))
-		.$(findShortestLine)
-		.$$();
+		.$$(findShortestLine);
 }
 
 export function lineTriangleToPoint2(lhs: Triangle2Type, rhs: Point2Type): Line2Type {
 	return $$(lhs)
 		.$(linesOfTriangle)
 		.$(map(line => lineLine2ToPoint2(lhs, rhs)))
-		.$(findShortestLine)
-		.$$();
+		.$$(findShortestLine);
 }

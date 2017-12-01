@@ -20,7 +20,6 @@ export const createPhysicsReducer = <TState extends EntitiesState>(
 			return $$(state)
 				.$(state => hardBodyPreReducer(applyForce)(state, action) as TState)
 				.$(state => onUpdate(state, advancePhysics(action.deltaTime)))
-				.$(state => hardBodyPostReducer(syncComponent)(state, action) as TState)
-				.$$();
+				.$$(state => hardBodyPostReducer(syncComponent)(state, action) as TState);
 		};
 };

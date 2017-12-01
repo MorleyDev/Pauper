@@ -40,8 +40,7 @@ export function findShortestLine(lines: Iterable<Line2Type>): Line2Type {
 	return $$(lines)
 		.$(map(line => ({ segment: line, length2: magnitudeSquared(subtract(line[1], line[0])) })))
 		.$(fold((prev, curr) => prev.length2 < curr.length2 ? prev : curr))
-		.$(line => line.segment)
-		.$$();
+		.$$(line => line.segment);
 }
 
 export function lineLine2ToRectangle(lhs: Line2Type, rhs: RectangleType): Line2Type {
