@@ -1,9 +1,10 @@
-import { RGBA, RGB } from "../models/colour.model";
-import { Circle, Rectangle, Text2 } from "../models/shapes.model";
 import { Blit, Clear, Fill, Frame, FrameCollection, FrameCommandType, Origin, RenderTarget, Rotate, Scale, Stroke } from "./render-frame.model";
+import { Circle, Rectangle, Text2 } from "../models/shapes.model";
+import { RGB, RGBA } from "../models/colour.model";
+
 import { AssetLoader } from "../assets/asset-loader.service";
-import { sfml } from "../engine/sfml";
 import { NamedImageAsset } from "../assets/asset.model";
+import { sfml } from "../engine/sfml";
 
 export function renderToSfml(assets: AssetLoader, frame: FrameCollection): void {
 	for (const command of frame) {

@@ -1,7 +1,8 @@
+import { Point2, Rectangle, Shape2 } from "../models/shapes.model";
+import { RGB, RGBA } from "../models/colour.model";
+
 import { BlittableAsset } from "../assets/asset.model";
 import { Radian } from "../maths/angles.maths";
-import { Point2, Rectangle, Shape2 } from "../models/shapes.model";
-import { RGBA, RGB } from "../models/colour.model";
 
 export type Frame = FrameCommand | FrameCollection;
 export const Frame = (..._commands: (FrameCommand | Frame)[]) => _commands;
