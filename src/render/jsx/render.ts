@@ -50,14 +50,14 @@ function jsonToFrame(json: ReactTestRendererJSON): FrameCommand | FrameCollectio
 declare global {
 	namespace JSX {
 		interface IntrinsicElements {
-			clear: { colour: RGB; children?: any };
-			origin: { coords: Vector2; children?: any };
-			rotate: { radians: Radian; children?: any };
-			scale: { by: Vector2; children?: any };
-			fill: { shape: Shape2; colour: RGB | RGBA };
-			stroke: { shape: Shape2; colour: RGB | RGBA };
-			blit: { image: string; dst: Point2 | Rectangle; src?: Rectangle };
-			renderTarget: { dst: Rectangle; size?: Vector2; children?: any };
+			clear: { key?: string | number; colour: RGB; children?: any };
+			origin: { key?: string | number; coords: Vector2; children?: any };
+			rotate: { key?: string | number; radians: Radian; children?: any };
+			scale: { key?: string | number; by: Vector2; children?: any };
+			fill: { key?: string | number; shape: Shape2; colour: RGB | RGBA };
+			stroke: { key?: string | number; shape: Shape2; colour: RGB | RGBA };
+			blit: { key?: string | number; image: string; dst: Point2 | Rectangle; src?: Rectangle };
+			renderTarget: { key?: string | number; dst: Rectangle; size?: Vector2; children?: any };
 		}
 	}
 }
