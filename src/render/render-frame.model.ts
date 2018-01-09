@@ -42,5 +42,5 @@ export const Stroke = (dst: Shape2, colour: RGB | RGBA): Stroke => [FrameCommand
 export type Blit = [FrameCommandType.Blit, string, Point2 | Rectangle] | [FrameCommandType.Blit, string, Point2 | Rectangle, Rectangle];
 export const Blit = (image: string, dst: Point2 | Rectangle, src?: Rectangle): Blit => src != null ? [FrameCommandType.Blit, image, dst, src] : [FrameCommandType.Blit, image, dst];
 
-export type RenderTarget = [FrameCommandType.RenderTarget, Rectangle, FrameCollection, Point2 | undefined];
-export const RenderTarget = (dst: Rectangle, frame: FrameCollection, size?: Point2): RenderTarget => [FrameCommandType.RenderTarget, dst, frame, size];
+export type RenderTarget = [FrameCommandType.RenderTarget, string, Rectangle, FrameCollection | undefined, Point2 | undefined];
+export const RenderTarget = (key: string, dst: Rectangle, frame?: FrameCollection, size?: Point2): RenderTarget => [FrameCommandType.RenderTarget, key, dst, frame, size];

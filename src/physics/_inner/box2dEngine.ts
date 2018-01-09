@@ -1,15 +1,16 @@
-import { EntityId } from "../../ecs/entity-base.type";
-import { EntityComponentReducerEvents } from "../../ecs/entity-component.reducer";
+import { Box2dBodyId, box2d } from "../../engine/box2d";
 import { Circle, Rectangle, Shape2 } from "../../models/shapes.model";
-import { Seconds } from "../../models/time.model";
+
+import { Collision } from "../collision.model";
+import { EntityComponentReducerEvents } from "../../ecs/entity-component.reducer";
+import { EntityId } from "../../ecs/entity-base.type";
 import { HardBodyComponent } from "../component/HardBodyComponent";
+import { PhysicsUpdateResult } from "../update.model";
+import { Seconds } from "../../models/time.model";
 import { StaticBodyComponent } from "../component/StaticBodyComponent";
+import { Vector2 } from "../../maths/vector.maths";
 import { createPhysicsEcsEvents } from "../reducer/ecs-events.func";
 import { createPhysicsReducer } from "../reducer/physics-body.reducer";
-import { PhysicsUpdateResult } from "../update.model";
-import { Collision } from "../collision.model";
-import { box2d, Box2dBodyId } from "../../engine/box2d";
-import { Vector2 } from "../../maths/vector.maths";
 
 const applyForce = (component: HardBodyComponent): HardBodyComponent => {
 	if (component.pendingForces.length === 0) {
@@ -94,6 +95,13 @@ export const box2dAdvancePhysicsEngine = (deltaTime: Seconds): PhysicsUpdateResu
 	};
 };
 
-export const box2dPhysicsReducer = createPhysicsReducer(box2dAdvancePhysicsEngine, syncComponent, applyForce);
+const setGravity = (gravity: Vector2): void => box2d.setGravity(Vector2.multiply(gravity, 100));
+
+export const box2dPhysicsReducer = createPhysicsReducer(
+	box2dAdvancePhysicsEngine,
+	syncComponent,
+	applyForce,
+	setGravity
+);
 
 box2d.setGravity(Vector2(0.0, 980.0));

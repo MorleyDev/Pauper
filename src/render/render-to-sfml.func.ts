@@ -97,6 +97,10 @@ function renderClear(assets: AssetLoader, clear: Clear): void {
 }
 
 
-function renderRenderTarget(assets: AssetLoader, [_, dst, frames, size]: RenderTarget): void {
-	// TODO
+function renderRenderTarget(assets: AssetLoader, [_, key, dst, frames, size]: RenderTarget): void {
+	if (frames === null) {
+		// TODO: Get existing frame with key and render
+	} else {
+		// TODO: Redraw render target
+	}
 }

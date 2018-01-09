@@ -1,21 +1,23 @@
 import "poly-decomp";
 
 import { Bodies, Body, Engine, Events, IChamferableBodyDefinition, Vector, World } from "matter-js";
-
-import { EntityId } from "../../ecs/entity-base.type";
-import { EntityComponentReducerEvents } from "../../ecs/entity-component.reducer";
 import { Circle, Rectangle, Shape2 } from "../../models/shapes.model";
-import { Seconds } from "../../models/time.model";
+
 import { Collision } from "../collision.model";
+import { EntityComponentReducerEvents } from "../../ecs/entity-component.reducer";
+import { EntityId } from "../../ecs/entity-base.type";
 import { HardBodyComponent } from "../component/HardBodyComponent";
+import { PhysicsUpdateResult } from "../update.model";
+import { Seconds } from "../../models/time.model";
 import { StaticBodyComponent } from "../component/StaticBodyComponent";
+import { Vector2 } from "../../maths/vector.maths";
 import { createPhysicsEcsEvents } from "../reducer/ecs-events.func";
 import { createPhysicsReducer } from "../reducer/physics-body.reducer";
-import { PhysicsUpdateResult } from "../update.model";
 
 function makeEngine(): Engine {
 	const engine = Engine.create();
 	// engine.enableSleeping = true;
+	engine.world.gravity = { x: 0, y: 9.8, scale: 0.0001 };
 	return engine;
 }
 
@@ -38,6 +40,14 @@ function attachEvents(engine: Engine): Engine {
 	});
 	return engine;
 }
+
+const setGravity = (engine: Engine) => (gravity: Vector2): void => {
+	engine.world.gravity = ({
+		scale: engine.world.gravity.scale,
+		x: gravity.x,
+		y: gravity.y
+	});
+};
 
 const applyForce = (component: HardBodyComponent): HardBodyComponent => {
 	if (component.pendingForces.length === 0) {
@@ -137,4 +147,9 @@ export const matterJsAdvancePhysicsEngine = (deltaTime: Seconds): PhysicsUpdateR
 	};
 };
 
-export const matterJsPhysicsReducer = createPhysicsReducer(matterJsAdvancePhysicsEngine, syncComponent, applyForce);
+export const matterJsPhysicsReducer = createPhysicsReducer(
+	matterJsAdvancePhysicsEngine,
+	syncComponent,
+	applyForce,
+	setGravity(matterJsPhysicsEngine)
+);

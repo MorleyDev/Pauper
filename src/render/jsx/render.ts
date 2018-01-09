@@ -41,7 +41,7 @@ function jsonToFrame(json: ReactTestRendererJSON): FrameCommand | FrameCollectio
 		case "blit":
 			return Blit(json.props["image"], json.props["dst"], json.props["src"]);
 		case "renderTarget":
-			return RenderTarget(json.props["dst"], (json.children || []).map(jsonToFrame), json.props["size"]);
+			return RenderTarget(json.props["key"], json.props["dst"], json.children != null ? json.children.map(jsonToFrame) : undefined, json.props["size"]);
 		default:
 			return (json.children || []).map(jsonToFrame);
 	}
@@ -50,14 +50,14 @@ function jsonToFrame(json: ReactTestRendererJSON): FrameCommand | FrameCollectio
 declare global {
 	namespace JSX {
 		interface IntrinsicElements {
-			clear: { colour: RGB; children?: any };
-			origin: { coords: Vector2; children?: any };
-			rotate: { radians: Radian; children?: any };
-			scale: { by: Vector2; children?: any };
-			fill: { shape: Shape2; colour: RGB | RGBA };
-			stroke: { shape: Shape2; colour: RGB | RGBA };
-			blit: { image: string; dst: Point2 | Rectangle; src?: Rectangle };
-			renderTarget: { dst: Rectangle; size?: Vector2; children?: any };
+			clear: { key?: string | number; colour: RGB; children?: any };
+			origin: { key?: string | number; coords: Vector2; children?: any };
+			rotate: { key?: string | number; radians: Radian; children?: any };
+			scale: { key?: string | number; by: Vector2; children?: any };
+			fill: { key?: string | number; shape: Shape2; colour: RGB | RGBA };
+			stroke: { key?: string | number; shape: Shape2; colour: RGB | RGBA };
+			blit: { key?: string | number; image: string; dst: Point2 | Rectangle; src?: Rectangle };
+			renderTarget: { key: string; dst: Rectangle; size?: Vector2; children?: any };
 		}
 	}
 }

@@ -1,7 +1,8 @@
-import { AssetLoader } from "../assets/asset-loader.service";
-import { RGBA, RGB } from "../models/colour.model";
-import { Circle, Rectangle, Text2 } from "../models/shapes.model";
 import { Blit, Clear, Fill, Frame, FrameCollection, FrameCommandType, Origin, RenderTarget, Rotate, Scale, Stroke } from "./render-frame.model";
+import { Circle, Rectangle, Text2 } from "../models/shapes.model";
+import { RGB, RGBA } from "../models/colour.model";
+
+import { AssetLoader } from "../assets/asset-loader.service";
 
 export type Target = {
 	readonly canvas: HTMLCanvasElement;
@@ -41,7 +42,7 @@ function RenderCommand(target: Target, command: Frame): void {
 			case FrameCommandType.Blit:
 				return renderBlit(target, command as Blit);
 		}
-	} else  {
+	} else {
 		return (command as FrameCollection).forEach(c => RenderCommand(target, c));
 	}
 }
@@ -113,7 +114,7 @@ function renderStroke({ canvas, context, assets }: Target, fill: Stroke): void {
 	const colour = fill[2];
 
 	context.beginPath();
-	context.strokeStyle =  getRGBA(colour);
+	context.strokeStyle = getRGBA(colour);
 	if (Array.isArray(shape)) {
 		context.moveTo(shape[0].x | 0, shape[0].y | 0);
 		for (let i = 1; i < shape.length; ++i) {
@@ -146,25 +147,31 @@ function renderClear({ canvas, context, assets }: Target, clear: Clear): void {
 }
 
 // tslint:disable-next-line:readonly-keyword
-const canvasCache: { [_wh: string]: Target | null | undefined } = {};
+type CanvasCacheRef = { canvas: HTMLCanvasElement; context: CanvasRenderingContext2D; frames: FrameCollection };
+const canvasCache: { [key: string]: CanvasCacheRef | null | undefined } = {};
 
-function renderRenderTarget({ canvas, context, assets }: Target, [_, dst, frames, size]: RenderTarget): void {
+function getOrCreateCanvasCacheRef(key: string, width: number, height: number): CanvasCacheRef {
+	return canvasCache[key] || createCanvasCacheRef(key, width, height);
+}
+
+function renderRenderTarget({ canvas, context, assets }: Target, [_, key, dst, frames, size]: RenderTarget): void {
 	const width = (size == null ? dst.width : size.x) | 0;
 	const height = (size == null ? dst.height : size.y) | 0;
-	const key = `${width}${height}`;
 
-	let targetCanvas = canvasCache[key];
-	canvasCache[key] = null;
-	if (targetCanvas == null) {
-		const newCanvas = document.createElement("canvas");
-		newCanvas.width = (size == null ? dst.width : size.x) | 0;
-		newCanvas.height = (size == null ? dst.height : size.y) | 0;
-		targetCanvas = { canvas: newCanvas, context: newCanvas.getContext("2d")!, assets };
+	const targetCanvas = getOrCreateCanvasCacheRef(key, width, height);
+	if (frames != null && targetCanvas.frames !== frames) {
+		renderToCanvas({ canvas: targetCanvas.canvas, context: targetCanvas.context, assets }, frames);
 	}
-
-	renderToCanvas(targetCanvas, frames);
 	context.drawImage(targetCanvas.canvas, dst.x | 0, dst.y | 0, dst.width | 0, dst.height | 0);
-	canvasCache[key] = targetCanvas;
+}
+
+function createCanvasCacheRef(key: string, width: number, height: number): CanvasCacheRef {
+	const canvas = document.createElement("canvas");
+	canvas.width = width;
+	canvas.height = height;
+	const ref: CanvasCacheRef = { canvas, context: canvas.getContext("2d")!, frames: [] };
+	canvasCache[key] = ref;
+	return ref;
 }
 
 function getRGBA(colour: RGB & { a?: number }): string {
