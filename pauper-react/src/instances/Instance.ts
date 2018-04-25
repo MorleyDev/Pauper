@@ -1,43 +1,30 @@
 import * as React from 'react';
-import { Shape2 } from '@morleydev/pauper-core/models/shapes.model';
+
+import { Frame, FrameCollection, FrameCommand, Stroke } from '@morleydev/pauper-render/render-frame.model';
 import { RGB, RGBA } from '@morleydev/pauper-core/models/colour.model';
-import { FrameCommand, Stroke, Frame, FrameCollection } from '@morleydev/pauper-render/render-frame.model';
+
+import { Shape2 } from '@morleydev/pauper-core/models/shapes.model';
+import { shallowCompare } from '../util/shallowCompare';
 
 export abstract class Instance<T> {
-    parent: any;
+	parent: Instance<T> = this;
 
-    constructor(public props: T) {
-    }
+	constructor(public name: string, public props: T) {
+	}
 
-    invalidate() {
-        this.parent.invalidate();
-    }
+	invalidate(fromChild: boolean) {
+		this.parent.invalidate(true);
+	}
 
-    replaceProps(newProps: T) {
-        const prevProps = this.props;
-        this.props = newProps;
-        if (areDifferent(prevProps, newProps)) {
-            this.invalidate();
-        }
-    }
+	replaceProps(newProps: T) {
+		const prevProps = this.props;
+		this.props = newProps;
+		if (this.shouldInvalidate(prevProps, newProps)) {
+			this.invalidate(false);
+		}
+	}
 
-    abstract draw(): FrameCommand | FrameCollection;
+	abstract draw(): FrameCommand | FrameCollection;
 
-    compareProps(originalProps: T, newProps: T) {
-        return areDifferent(originalProps, newProps);
-    }
-}
-
-function areDifferent(lhs: any, rhs: any): boolean {
-    for (const key in lhs) if (!(key in rhs)) return true;
-    for (const key in rhs) {
-        const lv = lhs[key];
-        const rv = rhs[key];
-        if (lv instanceof Object && rv instanceof Object) {
-            return areDifferent(lv, rhs);
-        } else if (lv !== rv) {
-            return true;
-        }
-    }
-    return false;
+	abstract shouldInvalidate(originalProps: T, newProps: T): boolean;
 }

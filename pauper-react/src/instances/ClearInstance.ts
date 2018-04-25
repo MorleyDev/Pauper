@@ -1,7 +1,11 @@
 import * as React from 'react';
+
 import { Clear, Frame } from '@morleydev/pauper-render/render-frame.model';
-import { RGB } from '@morleydev/pauper-core/models/colour.model';
+
 import { HasChildrenInstance } from './HasChildrenInstance';
+import { RGB } from '@morleydev/pauper-core/models/colour.model';
+import { compareRGB } from '../util/compareRGB';
+import { shallowCompare } from '../util/shallowCompare';
 
 export type ClearProps = {
 	colour?: RGB;
@@ -14,5 +18,9 @@ export default class ClearInstance extends HasChildrenInstance<ClearProps> {
 			Clear(this.props.colour),
 			this.children.map(child => child.draw())
 		];
+	}
+
+	shouldInvalidate(lhs: ClearProps, rhs: ClearProps): boolean {
+		return !compareRGB(lhs.colour, rhs.colour);
 	}
 }

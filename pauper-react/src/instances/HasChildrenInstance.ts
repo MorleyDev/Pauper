@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { Instance } from './Instance';
 
 export abstract class HasChildrenInstance<T> extends Instance<T> {
@@ -14,18 +15,18 @@ export abstract class HasChildrenInstance<T> extends Instance<T> {
 	appendChild(child: any) {
 		child.parent = this;
 		this.children.push(child);
-		this.invalidate();
+		this.invalidate(false);
 	}
 
 	// Remove a child from the existing list of children
 	removeChild(child: any) {
 		this.children = this.children.filter(c => c !== child);
-		this.invalidate();
+		this.invalidate(false);
 	}
 
 	// Insert a child before another child in the list of children
 	insertBefore(child: any, childBefore: any) {
 		this.children.splice(this.children.indexOf(childBefore), 0, child);
-		this.invalidate();
+		this.invalidate(false);
 	}
 }

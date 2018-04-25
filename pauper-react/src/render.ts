@@ -1,14 +1,16 @@
 import * as React from "react";
-import FrameRenderer from "./FrameRenderer";
+
+import { Point2, Rectangle, Shape2 } from "@morleydev/pauper-core/models/shapes.model";
+import { RGB, RGBA } from "@morleydev/pauper-core/models/colour.model";
+
 import ContainerInstance from "./instances/ContainerInstance";
 import { Frame } from "@morleydev/pauper-render/render-frame.model";
-import { RGB, RGBA } from "@morleydev/pauper-core/models/colour.model";
-import { Shape2, Rectangle, Point2 } from "@morleydev/pauper-core/models/shapes.model";
-import { Vector2 } from "@morleydev/pauper-core/maths/vector.maths";
+import FrameRenderer from "./FrameRenderer";
 import { Radian } from "@morleydev/pauper-core/maths/angles.maths";
+import { Vector2 } from "@morleydev/pauper-core/maths/vector.maths";
 
 export function render(element: React.ReactNode, callback?: Function): () => Frame {
-	const instance = new ContainerInstance();
+	const instance = new ContainerInstance("container", undefined);
 	const container = FrameRenderer.createContainer(instance);
 
 	FrameRenderer.updateContainer(element, container, null, callback);

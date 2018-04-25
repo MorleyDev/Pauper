@@ -1,11 +1,11 @@
-import StrokeInstance from "./instances/StrokeInstance";
-import FillInstance from "./instances/FillInstance";
-import ClearInstance from "./instances/ClearInstance";
 import BlitInstance from "./instances/BlitInstance";
-import RenderTargetInstance from "./instances/RenderTargetInstance";
-import ScaleInstance from "./instances/ScaleInstance";
+import ClearInstance from "./instances/ClearInstance";
+import FillInstance from "./instances/FillInstance";
 import OriginInstance from "./instances/OriginInstance";
+import RenderTargetInstance from "./instances/RenderTargetInstance";
 import RotateInstance from "./instances/RotateInstance";
+import ScaleInstance from "./instances/ScaleInstance";
+import StrokeInstance from "./instances/StrokeInstance";
 
 const Reconciler = require("react-reconciler");
 
@@ -17,21 +17,21 @@ export default Reconciler({
 	createInstance(type: string, props: any) {
 		switch (type) {
 			case "clear":
-				return new ClearInstance(props);
+				return new ClearInstance(type, props);
 			case "blit":
-				return new BlitInstance(props);
+				return new BlitInstance(type, props);
 			case "stroke":
-				return new StrokeInstance(props);
+				return new StrokeInstance(type, props);
 			case "fill":
-				return new FillInstance(props);
+				return new FillInstance(type, props);
 			case "rendertarget":
-				return new RenderTargetInstance(props);
+				return new RenderTargetInstance(type, props);
 			case "scale":
-				return new ScaleInstance(props);
+				return new ScaleInstance(type, props);
 			case "origin":
-				return new OriginInstance(props);
+				return new OriginInstance(type, props);
 			case "rotate":
-				return new RotateInstance(props);
+				return new RotateInstance(type, props);
 			default:
 				throw new Error(`Invalid component type: ${type}`);
 		}

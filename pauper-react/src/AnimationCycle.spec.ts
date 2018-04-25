@@ -1,11 +1,10 @@
 import * as React from "react";
 
-//import { ReactTestRenderer, ReactTestRendererJSON, create } from "react-test-renderer";
+import { ReactTestRenderer, ReactTestRendererJSON, create } from "react-test-renderer";
 
 import { AnimationCycleFrame } from "./AnimationCycle";
 import { test } from "tap";
 
-/*
 test("render/jsx/components/AnimationCycle", test => {
 	test.test("AnimationCycleFrame :: ({ children :: (Number -> JSX.Element), frame :: Number }) -> JSX.Element", test => {
 		const element = React.createElement(AnimationCycleFrame, {
@@ -37,4 +36,3 @@ test("render/jsx/components/AnimationCycle", test => {
 	});
 	test.end();
 });
-*/

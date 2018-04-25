@@ -1,13 +1,13 @@
 import * as React from "react";
 
-import { Blit, Clear, Stroke, RenderTarget, Scale, Fill, Origin, Rotate } from "@morleydev/pauper-render/render-frame.model";
+import { Blit, Clear, Fill, Origin, RenderTarget, Rotate, Scale, Stroke } from "@morleydev/pauper-render/render-frame.model";
 import { Circle, Rectangle } from "@morleydev/pauper-core/models/shapes.model";
 import { RGB, RGBA } from "@morleydev/pauper-core/models/colour.model";
 
-import { render } from "./render";
-import { createElement } from "react";
-import { test } from "tap";
 import { Vector2 } from "@morleydev/pauper-core/maths/vector.maths";
+import { createElement } from "react";
+import { render } from "./render";
+import { test } from "tap";
 
 test("render/jsx/render", test => {
 	test.test("simple", test => {
@@ -134,39 +134,31 @@ test("render/jsx/render", test => {
 		let setY = (y: number) => { };
 		let setZ = (z: number) => { };
 
-		class TestInnerComponent extends React.Component<{ x: number }, { y: number }> {
-			state = { y: 0 };
-			componentWillMount() {
-				setY = y => this.setState(state => ({ ...state, y }));
-			}
-			render() {
-				return <origin coords={Vector2(5, 10)}>
-					<rotate radians={0.25}>
-						<scale by={Vector2(2, 3)}>
-							<stroke shape={Rectangle(this.props.x, this.state.y, 50, 25)} colour={RGB(25, 50, 100)} />
-						</scale>
-					</rotate>
-				</origin>
-			}
-		}
+		class TestStateComponent extends React.Component<{ x: number }, { y: number, z: number }> {
+			public state = { y: 0, z: 0 };
 
-		class TestStateComponent extends React.Component<{}, { z: number }> {
-			state = { z: 0 };
 			componentWillMount() {
 				setZ = z => this.setState(state => ({ ...state, z }));
+				setY = y => this.setState(state => ({ ...state, y }));
 			}
 
 			render() {
 				return (
 					<rendertarget id="test_id" dst={Rectangle(5, this.state.z, 25, 30)}>
-						<TestInnerComponent x={10} />
+						<origin coords={Vector2(5, 10)}>
+							<rotate radians={0.25}>
+								<scale by={Vector2(2, 3)}>
+									<stroke shape={Rectangle(this.props.x, this.state.y, 50, 25)} colour={RGB(25, 50, 100)} />
+								</scale>
+							</rotate>
+						</origin>
 					</rendertarget>
 				);
 			}
 		}
 		const renderer = render(
 			<clear colour={RGB(0, 0, 0)}>
-				<TestStateComponent />
+				<TestStateComponent x={10} />
 			</clear>
 		);
 		const frame1 = renderer();
