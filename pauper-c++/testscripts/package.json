@@ -1,0 +1,15 @@
+{
+    "scripts": {
+        "compile:dev": "webpack --progress"
+    },
+    "devDependencies": {
+        "typescript": "2.8.3",
+        "ts-loader": "4.2.0",
+        "webpack": "4.6.0",
+        "webpack-cli": "2.0.15"
+    },
+    "dependencies": {
+        "@morleydev/pauper-core": "../../pauper-core/dist",
+        "rxjs": "5.5.10"
+    }
+}

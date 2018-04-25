@@ -1,0 +1,30 @@
+{
+  "name": "@morleydev/pauper-core",
+  "version": "1.1.2",
+  "description": "",
+  "scripts": {
+    "typecheck": "tsc -p . --noEmit",
+    "compile": "tsc -p .",
+    "lint": "tslint --project .",
+    "test": "ts-node ./src/test.ts",
+    "test-dot": "ts-node ./src/test.ts | tap-dot",
+    "coverage": "tsc -p . && tap dist/**/*.spec.js --coverage html"
+  },
+  "repository": "https://github.com/MorleyDev/Pauper.git",
+  "author": "Jason Morley <morleydev.co.uk@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "9.3.0",
+    "@types/jsdom":"11.0.4",
+    "tap": "11.1.4",
+    "tap-dot": "1.0.5",
+    "ts-node": "6.0.0",
+    "tslint": "5.9.1",
+    "typescript": "2.8.3",
+    "jsdom": "11.9.0",
+    "canvas-prebuilt": "1.6.5-prerelease.1"
+  },
+  "dependencies": {
+    "@morleydev/pauper-core": "../pauper-core/dist"
+  }
+}

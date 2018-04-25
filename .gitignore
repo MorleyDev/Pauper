@@ -1,9 +1,0 @@
-# Webpack/Node
-dist/
-out/
-yarn.lock
-node_modules
-
-# Testing
-coverage
-.nyc_output
