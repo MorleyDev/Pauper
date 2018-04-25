@@ -4,12 +4,12 @@ import { Point2, Rectangle, Shape2 } from "@morleydev/pauper-core/models/shapes.
 import { RGB, RGBA } from "@morleydev/pauper-core/models/colour.model";
 
 import ContainerInstance from "./instances/ContainerInstance";
-import { Frame } from "@morleydev/pauper-render/render-frame.model";
+import { FrameCollection } from "@morleydev/pauper-render/render-frame.model";
 import FrameRenderer from "./FrameRenderer";
 import { Radian } from "@morleydev/pauper-core/maths/angles.maths";
 import { Vector2 } from "@morleydev/pauper-core/maths/vector.maths";
 
-export function render(element: React.ReactNode, callback?: Function): () => Frame {
+export function render(element: React.ReactNode, callback?: Function): () => FrameCollection {
 	const instance = new ContainerInstance("container", undefined);
 	const container = FrameRenderer.createContainer(instance);
 

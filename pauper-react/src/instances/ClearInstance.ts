@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Clear, Frame } from '@morleydev/pauper-render/render-frame.model';
+import { Clear, FrameCollection } from '@morleydev/pauper-render/render-frame.model';
 
 import { HasChildrenInstance } from './HasChildrenInstance';
 import { RGB } from '@morleydev/pauper-core/models/colour.model';
@@ -13,7 +13,7 @@ export type ClearProps = {
 };
 
 export default class ClearInstance extends HasChildrenInstance<ClearProps> {
-	draw() {
+	draw(): FrameCollection {
 		return [
 			Clear(this.props.colour),
 			this.children.map(child => child.draw())

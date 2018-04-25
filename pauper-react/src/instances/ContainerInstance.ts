@@ -1,4 +1,4 @@
-import { Frame } from "@morleydev/pauper-render/render-frame.model";
+import { FrameCollection } from "@morleydev/pauper-render/render-frame.model";
 import { HasChildrenInstance } from "./HasChildrenInstance";
 
 export default class ContainerInstance extends HasChildrenInstance<undefined> {
@@ -7,7 +7,7 @@ export default class ContainerInstance extends HasChildrenInstance<undefined> {
 	invalidate() {
 	}
 
-	draw() {
+	draw(): FrameCollection {
 		return this.children.map(child => child.draw());	
 	}
 

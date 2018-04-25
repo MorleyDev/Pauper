@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Frame, FrameCommand, Stroke } from '@morleydev/pauper-render/render-frame.model';
+import { FrameCommand, Stroke } from '@morleydev/pauper-render/render-frame.model';
 import { RGB, RGBA } from '@morleydev/pauper-core/models/colour.model';
 
 import { Instance } from './Instance';
@@ -14,7 +14,7 @@ export type StrokeInstanceProps = {
 };
 
 export default class StrokeInstance extends Instance<StrokeInstanceProps> {
-	draw(): any {
+	draw(): FrameCommand {
 		return Stroke(this.props.shape, this.props.colour);
 	}
 

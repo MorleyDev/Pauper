@@ -7,13 +7,13 @@ import { Shape2 } from '@morleydev/pauper-core/models/shapes.model';
 import { shallowCompare } from '../util/shallowCompare';
 
 export abstract class Instance<T> {
-	parent: Instance<T> = this;
+	parent?: Instance<T>;
 
 	constructor(public name: string, public props: T) {
 	}
 
 	invalidate(fromChild: boolean) {
-		this.parent.invalidate(true);
+		this.parent && this.parent.invalidate(true);
 	}
 
 	replaceProps(newProps: T) {

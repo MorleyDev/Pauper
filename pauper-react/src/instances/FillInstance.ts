@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Fill, Frame, FrameCommand } from '@morleydev/pauper-render/render-frame.model';
+import { Fill, FrameCommand } from '@morleydev/pauper-render/render-frame.model';
 import { RGB, RGBA } from '@morleydev/pauper-core/models/colour.model';
 
 import { Instance } from './Instance';
@@ -13,7 +13,7 @@ export type FillInstanceProps = {
 };
 
 export default class FillInstance extends Instance<FillInstanceProps> {
-	public draw(): any {
+	public draw(): FrameCommand {
 		return Fill(this.props.shape, this.props.colour);
 	}
 

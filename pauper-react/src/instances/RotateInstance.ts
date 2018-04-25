@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Frame, Rotate } from '@morleydev/pauper-render/render-frame.model';
+import { FrameCommand, Rotate } from '@morleydev/pauper-render/render-frame.model';
 
 import { HasChildrenInstance } from './HasChildrenInstance';
 import { Radian } from '@morleydev/pauper-core/maths/angles.maths';
@@ -12,7 +12,7 @@ export type RotateProps = {
 };
 
 export default class RotateInstance extends HasChildrenInstance<RotateProps> {
-	draw(): any {
+	draw(): FrameCommand {
 		return Rotate(this.props.radians, this.children.map(child => child.draw()))
 	}
 

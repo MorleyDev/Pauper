@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Frame, RenderTarget } from '@morleydev/pauper-render/render-frame.model';
+import { FrameCommand, RenderTarget } from '@morleydev/pauper-render/render-frame.model';
 import { Point2, Rectangle } from '@morleydev/pauper-core/models/shapes.model';
 
 import { HasChildrenInstance } from './HasChildrenInstance';
@@ -15,17 +15,17 @@ export type RenderTargetProps = {
 };
 
 export default class RenderTargetInstance extends HasChildrenInstance<RenderTargetProps> {
-	frame?: Frame;
+	frame?: FrameCommand;
 
 	invalidate(fromChild: boolean) {
 		if (!fromChild) {
-			this.parent.invalidate(true);
+			this.parent && this.parent.invalidate(true);
 		} else {
 			this.frame = undefined;
 		}
 	}
 
-	draw(): any {
+	draw(): FrameCommand {
 		if (this.frame == null) {
 			this.frame = RenderTarget(this.props.id, this.props.dst, this.children.map(child => child.draw()), this.props.size);
 			return this.frame;

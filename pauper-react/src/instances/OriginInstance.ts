@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Frame, Origin } from '@morleydev/pauper-render/render-frame.model';
+import { FrameCommand, Origin } from '@morleydev/pauper-render/render-frame.model';
 
 import { HasChildrenInstance } from './HasChildrenInstance';
 import { Vector2 } from '@morleydev/pauper-core/maths/vector.maths';
@@ -11,7 +11,7 @@ export type OriginProps = {
 };
 
 export default class OriginInstance extends HasChildrenInstance<OriginProps> {
-	draw(): any {
+	draw(): FrameCommand {
 		return Origin(this.props.coords, this.children.map(child => child.draw()));
 	}
 

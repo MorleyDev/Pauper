@@ -13,7 +13,8 @@
         "target": "es2017",
         "forceConsistentCasingInFileNames": true,
         "strict": true,
-        "allowJs": true
+        "allowJs": true,
+        "jsx": "react"
     },
     "exclude": [
         "node_modules/**/*",

@@ -10,6 +10,10 @@
     },
     "dependencies": {
         "@morleydev/pauper-core": "../../pauper-core/dist",
-        "rxjs": "5.5.10"
+        "@morleydev/pauper-render": "../../pauper-render/dist",
+        "@morleydev/pauper-react": "../../pauper-react/dist",
+        "@types/react": "16.3.12",
+        "rxjs": "5.5.10",
+        "react": "16.3.2"
     }
 }

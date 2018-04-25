@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Blit, Frame } from '@morleydev/pauper-render/render-frame.model';
+import { Blit, FrameCommand } from '@morleydev/pauper-render/render-frame.model';
 import { Point2, Rectangle } from '@morleydev/pauper-core/models/shapes.model';
 
 import { Instance } from './Instance';
@@ -14,7 +14,7 @@ export type BlitProps = {
 };
 
 export default class BlitInstance extends Instance<BlitProps> {
-	draw(): any {
+	draw(): FrameCommand {
 		return Blit(this.props.image, this.props.dst, this.props.src);
 	}
 

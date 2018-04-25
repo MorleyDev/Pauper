@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Frame, Scale } from '@morleydev/pauper-render/render-frame.model';
+import { FrameCommand, Scale } from '@morleydev/pauper-render/render-frame.model';
 
 import { HasChildrenInstance } from './HasChildrenInstance';
 import { Vector2 } from '@morleydev/pauper-core/maths/vector.maths';
@@ -12,7 +12,7 @@ export type ScaleProps = {
 };
 
 export default class ScaleInstance extends HasChildrenInstance<ScaleProps> {
-	draw(): any {
+	draw(): FrameCommand {
 		return Scale(this.props.by, this.children.map(child => child.draw()));
 	}
 
