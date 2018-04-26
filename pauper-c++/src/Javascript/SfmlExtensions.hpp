@@ -25,7 +25,7 @@ struct Sfml {
 	SfmlAssetStore assetStore;
 	std::vector<std::unique_ptr<sf::Sound>> activeSoundEffects;
 	std::map<std::string, std::shared_ptr<sf::RenderTexture>> renderTextures;
-	std::vector<std::shared_ptr<sf::RenderTexture>> renderStack;
+	std::vector<std::pair<std::shared_ptr<sf::RenderTexture>, std::vector<sf::Transform>>> renderStack;
 	sf::View view;
 };
 

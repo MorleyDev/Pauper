@@ -164,13 +164,13 @@ const char* sfmlScript =
 "})();";
 
 Sfml::Sfml(std::string title, sf::VideoMode video, TaskQueue& tasks, TaskQueue& mainThreadTasks)
-: window(video, title),
-  assetStore(tasks, mainThreadTasks),
-  stack(),
-  activeSoundEffects(),
-  renderTextures(),
-  renderStack(),
-  view() {
+	: window(video, title),
+	assetStore(tasks, mainThreadTasks),
+	stack(),
+	activeSoundEffects(),
+	renderTextures(),
+	renderStack(),
+	view() {
 	stack.push_back(sf::Transform::Identity);
 	view = window.getView();
 }
@@ -200,7 +200,13 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 		const auto r = ctx->getargf(0);
 		const auto g = ctx->getargf(1);
 		const auto b = ctx->getargf(2);
-		sfml.window.clear(sf::Color(static_cast<sf::Uint8>(r), static_cast<sf::Uint8>(g), static_cast<sf::Uint8>(b)));
+		if (sfml.renderStack.empty()) {
+			sfml.window.clear(sf::Color(static_cast<sf::Uint8>(r), static_cast<sf::Uint8>(g), static_cast<sf::Uint8>(b)));
+		}
+		else {
+			auto& stack = sfml.renderStack.back();
+			stack.first->clear(sf::Color(static_cast<sf::Uint8>(r), static_cast<sf::Uint8>(g), static_cast<sf::Uint8>(b)));
+		}
 		return false;
 	}, 3);
 	engine.setGlobalFunction("SFML_Stroke_Circle", [&sfml](TEngine* ctx) {
@@ -219,7 +225,13 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 		circleShape.setFillColor(sf::Color(static_cast<sf::Uint8>(r), static_cast<sf::Uint8>(g), static_cast<sf::Uint8>(b), static_cast<sf::Uint8>(std::floor(a * 255.0))));
 		circleShape.setOutlineThickness(1.0f);
 		circleShape.setOutlineColor(color);
-		sfml.window.draw(circleShape, sf::RenderStates(sfml.stack.back()));
+		if (sfml.renderStack.empty()) {
+			sfml.window.draw(circleShape, sf::RenderStates(sfml.stack.back()));
+		}
+		else {
+			auto& stack = sfml.renderStack.back();
+			stack.first->draw(circleShape, sf::RenderStates(stack.second.back()));
+		}
 		return false;
 	}, 7);
 	engine.setGlobalFunction("SFML_Stroke_Rectangle", [&sfml](TEngine* ctx) {
@@ -238,7 +250,13 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 		rectShape.setFillColor(sf::Color::Transparent);
 		rectShape.setOutlineThickness(1.0f);
 		rectShape.setOutlineColor(color);
-		sfml.window.draw(rectShape, sf::RenderStates(sfml.stack.back()));
+		if (sfml.renderStack.empty()) {
+			sfml.window.draw(rectShape, sf::RenderStates(sfml.stack.back()));
+		}
+		else {
+			auto& stack = sfml.renderStack.back();
+			stack.first->draw(rectShape, sf::RenderStates(stack.second.back()));
+		}
 		return false;
 	}, 8);
 	engine.setGlobalFunction("SFML_Stroke_Triangle", [&sfml](TEngine* ctx) {
@@ -259,7 +277,13 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 		array[1] = sf::Vertex(sf::Vector2f(static_cast<float>(x2), static_cast<float>(y2)), color);
 		array[2] = sf::Vertex(sf::Vector2f(static_cast<float>(x3), static_cast<float>(y3)), color);
 		array[4] = sf::Vertex(sf::Vector2f(static_cast<float>(x1), static_cast<float>(y1)), color);
-		sfml.window.draw(array, sf::RenderStates(sfml.stack.back()));
+		if (sfml.renderStack.empty()) {
+			sfml.window.draw(array, sf::RenderStates(sfml.stack.back()));
+		}
+		else {
+			auto& stack = sfml.renderStack.back();
+			stack.first->draw(array, sf::RenderStates(stack.second.back()));
+		}
 		return false;
 	}, 10);
 	engine.setGlobalFunction("SFML_Fill_Circle", [&sfml](TEngine* ctx) {
@@ -275,7 +299,13 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 		circleShape.setOrigin(static_cast<float>(radius), static_cast<float>(radius));
 		circleShape.setPosition(static_cast<float>(x), static_cast<float>(y));
 		circleShape.setFillColor(sf::Color(static_cast<sf::Uint8>(r), static_cast<sf::Uint8>(g), static_cast<sf::Uint8>(b), static_cast<sf::Uint8>(std::floor(a * 255.0))));
-		sfml.window.draw(circleShape, sf::RenderStates(sfml.stack.back()));
+		if (sfml.renderStack.empty()) {
+			sfml.window.draw(circleShape, sf::RenderStates(sfml.stack.back()));
+		}
+		else {
+			auto& stack = sfml.renderStack.back();
+			stack.first->draw(circleShape, sf::RenderStates(stack.second.back()));
+		}
 		return false;
 	}, 7);
 	engine.setGlobalFunction("SFML_Fill_Rectangle", [&sfml](TEngine* ctx) {
@@ -291,7 +321,13 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 		sf::RectangleShape rectShape(sf::Vector2f(static_cast<float>(width), static_cast<float>(height)));
 		rectShape.setPosition(static_cast<float>(x), static_cast<float>(y));
 		rectShape.setFillColor(sf::Color(static_cast<sf::Uint8>(r), static_cast<sf::Uint8>(g), static_cast<sf::Uint8>(b), static_cast<sf::Uint8>(std::floor(a * 255.0))));
-		sfml.window.draw(rectShape, sf::RenderStates(sfml.stack.back()));
+		if (sfml.renderStack.empty()) {
+			sfml.window.draw(rectShape, sf::RenderStates(sfml.stack.back()));
+		}
+		else {
+			auto& stack = sfml.renderStack.back();
+			stack.first->draw(rectShape, sf::RenderStates(stack.second.back()));
+		}
 		return false;
 	}, 8);
 	engine.setGlobalFunction("SFML_Fill_Triangle", [&sfml](TEngine* ctx) {
@@ -311,7 +347,13 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 		array[0] = sf::Vertex(sf::Vector2f(static_cast<float>(x1), static_cast<float>(y1)), color);
 		array[1] = sf::Vertex(sf::Vector2f(static_cast<float>(x2), static_cast<float>(y2)), color);
 		array[2] = sf::Vertex(sf::Vector2f(static_cast<float>(x3), static_cast<float>(y3)), color);
-		sfml.window.draw(array, sf::RenderStates(sfml.stack.back()));
+		if (sfml.renderStack.empty()) {
+			sfml.window.draw(array, sf::RenderStates(sfml.stack.back()));
+		}
+		else {
+			auto& stack = sfml.renderStack.back();
+			stack.first->draw(array, sf::RenderStates(stack.second.back()));
+		}
 		return false;
 	}, 10);
 	engine.setGlobalFunction("SFML_Draw_Line", [&sfml](TEngine* ctx) {
@@ -328,7 +370,12 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 		sf::VertexArray array(sf::PrimitiveType::Lines, 2);
 		array[0] = sf::Vertex(sf::Vector2f(static_cast<float>(x1), static_cast<float>(y1)), color);
 		array[1] = sf::Vertex(sf::Vector2f(static_cast<float>(x2), static_cast<float>(y2)), color);
-		sfml.window.draw(array, sf::RenderStates(sfml.stack.back()));
+		if (sfml.renderStack.empty()) {
+			sfml.window.draw(array, sf::RenderStates(sfml.stack.back()));
+		} else {
+			auto& stack = sfml.renderStack.back();
+			stack.first->draw(array, sf::RenderStates(stack.second.back()));
+		}
 		return false;
 	}, 8);
 	engine.setGlobalFunction("SFML_Fill_Text", [&sfml](TEngine* ctx) {
@@ -346,7 +393,13 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 		sf::Text t(text, *font, size);
 		t.setPosition(static_cast<float>(x), static_cast<float>(y));
 		t.setFillColor(sf::Color(static_cast<sf::Uint8>(r), static_cast<sf::Uint8>(g), static_cast<sf::Uint8>(b), static_cast<sf::Uint8>(std::floor(a * 255.0))));
-		sfml.window.draw(t, sf::RenderStates(sfml.stack.back()));
+		if (sfml.renderStack.empty()) {
+			sfml.window.draw(t, sf::RenderStates(sfml.stack.back()));
+		}
+		else {
+			auto& stack = sfml.renderStack.back();
+			stack.first->draw(t, sf::RenderStates(stack.second.back()));
+		}
 		return false;
 	}, 9);
 	engine.setGlobalFunction("SFML_Stroke_Text", [&sfml](TEngine* ctx) {
@@ -365,7 +418,13 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 		t.setPosition(static_cast<float>(x), static_cast<float>(y));
 		t.setFillColor(sf::Color::Transparent);
 		t.setOutlineColor(sf::Color(static_cast<sf::Uint8>(r), static_cast<sf::Uint8>(g), static_cast<sf::Uint8>(b), static_cast<sf::Uint8>(std::floor(a * 255.0))));
-		sfml.window.draw(t, sf::RenderStates(sfml.stack.back()));
+		if (sfml.renderStack.empty()) {
+			sfml.window.draw(t, sf::RenderStates(sfml.stack.back()));
+		}
+		else {
+			auto& stack = sfml.renderStack.back();
+			stack.first->draw(t, sf::RenderStates(stack.second.back()));
+		}
 		return false;
 	}, 9);
 
@@ -384,7 +443,13 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 		sf::Sprite spr(*img, sf::IntRect(srcX, srcY, srcWidth, srcHeight));
 		spr.setPosition(static_cast<float>(dstX), static_cast<float>(dstY));
 		spr.setScale(static_cast<float>(dstWidth / srcWidth), static_cast<float>(dstHeight / srcHeight));
-		sfml.window.draw(spr, sf::RenderStates(sfml.stack.back()));
+		if (sfml.renderStack.empty()) {
+			sfml.window.draw(spr, sf::RenderStates(sfml.stack.back()));
+		}
+		else {
+			auto& stack = sfml.renderStack.back();
+			stack.first->draw(spr, sf::RenderStates(stack.second.back()));
+		}
 		return false;
 	}, 9);
 
@@ -394,28 +459,52 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 
 		auto m = sf::Transform(sfml.stack.back());
 		m.translate(static_cast<float>(x), static_cast<float>(y));
-		sfml.stack.push_back(m);
+		if (sfml.renderStack.empty()) {
+			sfml.stack.push_back(m);
+		}
+		else {
+			auto& stack = sfml.renderStack.back();
+			stack.second.push_back(m);
+		}
 		return false;
 	}, 2);
 	engine.setGlobalFunction("SFML_Push_Scale", [&sfml](TEngine* ctx) {
 		const auto x = ctx->getargf(0);
 		const auto y = ctx->getargf(1);
-		
+
 		auto m = sf::Transform(sfml.stack.back());
 		m.scale(static_cast<float>(x), static_cast<float>(y));
-		sfml.stack.push_back(m);
+		if (sfml.renderStack.empty()) {
+			sfml.stack.push_back(m);
+		}
+		else {
+			auto& stack = sfml.renderStack.back();
+			stack.second.push_back(m);
+		}
 		return false;
 	}, 2);
 	engine.setGlobalFunction("SFML_Push_Rotate", [&sfml](TEngine* ctx) {
 		const auto degrees = ctx->getargf(0);
-		
+
 		auto m = sf::Transform(sfml.stack.back());
 		m.rotate(static_cast<float>(degrees));
-		sfml.stack.push_back(m);
+		if (sfml.renderStack.empty()) {
+			sfml.stack.push_back(m);
+		}
+		else {
+			auto& stack = sfml.renderStack.back();
+			stack.second.push_back(m);
+		}
 		return false;
 	}, 1);
 	engine.setGlobalFunction("SFML_Pop", [&sfml](TEngine* ctx) {
-		sfml.stack.pop_back();
+		if (sfml.renderStack.empty()) {
+			sfml.stack.pop_back();
+		}
+		else {
+			auto& stack = sfml.renderStack.back();
+			stack.second.pop_back();
+		}
 		return false;
 	}, 0);
 
@@ -431,6 +520,8 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 
 		auto texture = std::make_shared<sf::RenderTexture>();
 		const auto result = texture->create(w, h);
+		if (!result)
+			throw std::runtime_error("Could not create RenderTexture " + key);
 		sfml.renderTextures.insert(std::make_pair(key, texture));
 
 		ctx->push(result);
@@ -455,7 +546,13 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 		sf::Sprite spr(renderTexture->second->getTexture(), sf::IntRect(srcX, srcY, srcWidth, srcHeight));
 		spr.setPosition(static_cast<float>(dstX), static_cast<float>(dstY));
 		spr.setScale(static_cast<float>(dstWidth / srcWidth), static_cast<float>(dstHeight / srcHeight));
-		sfml.window.draw(spr, sf::RenderStates(sfml.stack.back()));
+		if (sfml.renderStack.empty()) {
+			sfml.window.draw(spr, sf::RenderStates(sfml.stack.back()));
+		}
+		else {
+			auto& stack = sfml.renderStack.back();
+			stack.first->draw(spr, sf::RenderStates(stack.second.back()));
+		}
 		return false;
 	}, 9);
 
@@ -466,7 +563,7 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 			ctx->push(false);
 			return true;
 		}
-		sfml.renderStack.push_back(found->second);
+		sfml.renderStack.push_back(std::make_pair(found->second, std::vector<sf::Transform>({ sf::Transform::Identity })));
 		ctx->push(true);
 		return true;
 	}, 1);
@@ -475,8 +572,8 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 			ctx->push(-1);
 			return true;
 		}
-		const auto back = sfml.renderStack.back();
-		back->display();
+		const auto& back = sfml.renderStack.back();
+		back.first->display();
 		sfml.renderStack.pop_back();
 		ctx->push(static_cast<int>(sfml.renderStack.size()));
 		return true;
@@ -615,7 +712,7 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 template<typename TEngine> void _pollEvents(TEngine &engine, Sfml &sfml) {
 	sf::Event event = {};
 	while (sfml.window.pollEvent(event)) {
-		switch (event.type)	{
+		switch (event.type) {
 		case sf::Event::Resized: {
 			engine.trigger("SFML_OnEvent", static_cast<int>(event.type), event.size.width, event.size.height);
 			break;
