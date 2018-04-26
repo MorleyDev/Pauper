@@ -1,12 +1,12 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { FrameCommand, Stroke } from '@morleydev/pauper-render/render-frame.model';
-import { RGB, RGBA } from '@morleydev/pauper-core/models/colour.model';
+import { FrameCommand, Stroke } from "@morleydev/pauper-render/render-frame.model";
+import { RGB, RGBA } from "@morleydev/pauper-core/models/colour.model";
 
-import { Instance } from './Instance';
-import { Shape2 } from '@morleydev/pauper-core/models/shapes.model';
-import { compareColour } from '../util/compareRGB';
-import { shallowCompare } from '../util/shallowCompare';
+import { Instance } from "./Instance";
+import { Shape2 } from "@morleydev/pauper-core/models/shapes.model";
+import { compareColour } from "../util/compareRGB";
+import { shallowCompare } from "../util/shallowCompare";
 
 export type StrokeInstanceProps = {
 	readonly shape: Shape2;

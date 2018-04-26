@@ -1,6 +1,6 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Instance } from './Instance';
+import { Instance } from "./Instance";
 
 export abstract class HasChildrenInstance<T> extends Instance<T> {
 	children: any[] = [];

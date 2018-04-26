@@ -1,12 +1,12 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { FrameCommand, RenderTarget } from '@morleydev/pauper-render/render-frame.model';
-import { Point2, Rectangle } from '@morleydev/pauper-core/models/shapes.model';
+import { FrameCommand, RenderTarget } from "@morleydev/pauper-render/render-frame.model";
+import { Point2, Rectangle } from "@morleydev/pauper-core/models/shapes.model";
 
-import { HasChildrenInstance } from './HasChildrenInstance';
-import { RGB } from '@morleydev/pauper-core/models/colour.model';
-import { Vector2 } from '@morleydev/pauper-core/maths/vector.maths';
-import { shallowCompare } from '../util/shallowCompare';
+import { HasChildrenInstance } from "./HasChildrenInstance";
+import { RGB } from "@morleydev/pauper-core/models/colour.model";
+import { Vector2 } from "@morleydev/pauper-core/maths/vector.maths";
+import { shallowCompare } from "../util/shallowCompare";
 
 export type RenderTargetProps = {
 	id: string;

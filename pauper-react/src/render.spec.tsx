@@ -23,6 +23,11 @@ test("render/jsx/render", test => {
 				<origin coords={Vector2(20, -10)}>
 					<>
 						<stroke shape={Circle(0, 0, 25)} colour={RGBA(100, 200, 100, 0.5)} />
+						{[
+							<stroke key={0} shape={Circle(10, 0, 25)} colour={RGBA(100, 200, 100, 0.5)} />,
+							<stroke key={1} shape={Circle(0, 20, 25)} colour={RGBA(100, 200, 100, 0.5)} />,
+							<stroke key={2} shape={Circle(10, 10, 25)} colour={RGBA(100, 200, 100, 0.5)} />
+						]}
 					</>
 				</origin>
 			</clear>
@@ -40,7 +45,10 @@ test("render/jsx/render", test => {
 					]),
 				]),
 				Origin(Vector2(20, -10), [
-					Stroke(Circle(0, 0, 25), RGBA(100, 200, 100, 0.5))
+					Stroke(Circle(0, 0, 25), RGBA(100, 200, 100, 0.5)),
+					Stroke(Circle(10, 0, 25), RGBA(100, 200, 100, 0.5)),
+					Stroke(Circle(0, 20, 25), RGBA(100, 200, 100, 0.5)),
+					Stroke(Circle(10, 10, 25), RGBA(100, 200, 100, 0.5))
 				])
 			]
 		]]);

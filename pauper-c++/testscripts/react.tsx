@@ -65,7 +65,9 @@ class GameApp extends React.Component<{}, GameAppState> {
 				{this.state.startPoint != null
 					&& this.state.tempEndPoint != null
 					&& <stroke shape={Line2(this.state.startPoint, this.state.tempEndPoint)} colour={RGB(255, 0, 0)} />}
-				{this.state.lines.map((line, index) => <stroke key={index} shape={line} colour={RGB(255, 255, 255)} />)}
+				<rendertarget id="lines" dst={Rectangle(0, 0, 640, 480)} size={Vector2(640, 480)}>
+					{this.state.lines.map((line, index) => <stroke key={index} shape={line} colour={RGB(255, 255, 255)} />)}
+				</rendertarget>
 			</clear>
 		);
 	}
@@ -73,6 +75,7 @@ class GameApp extends React.Component<{}, GameAppState> {
 
 const renderer = render(<GameApp />);
 requestAnimationFrame(function draw() {
-	renderToSfml(loader, renderer());
+	const frame = renderer();
+	renderToSfml(loader, frame);
 	requestAnimationFrame(draw);
 });

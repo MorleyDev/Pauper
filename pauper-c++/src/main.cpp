@@ -60,6 +60,8 @@ int main_synchronous(std::vector<std::string> arguments) {
 	TaskQueue tasks;
 
 	std::ofstream cerr("./stderr.log");
+	std::ofstream profilerOutput("./profiler.log");
+
 	Sfml sfml("GAM", sf::VideoMode(512, 512), tasks, mainThreadTasks);
 	Box2d box2d;
 
@@ -125,7 +127,7 @@ int main_synchronous(std::vector<std::string> arguments) {
 		cancellationToken.store(true);
 
 		std::for_each(threads.begin(), threads.end(), [](std::thread& thread) { thread.join(); });
-		mainProfiler.iodump(std::cout);
+		mainProfiler.iodump(profilerOutput);
 		return 0;
 	}
 	catch (const std::exception &err)

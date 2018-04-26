@@ -1,10 +1,10 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { FrameCommand, Rotate } from '@morleydev/pauper-render/render-frame.model';
+import { FrameCommand, Rotate } from "@morleydev/pauper-render/render-frame.model";
 
-import { HasChildrenInstance } from './HasChildrenInstance';
-import { Radian } from '@morleydev/pauper-core/maths/angles.maths';
-import { Vector2 } from '@morleydev/pauper-core/maths/vector.maths';
+import { HasChildrenInstance } from "./HasChildrenInstance";
+import { Radian } from "@morleydev/pauper-core/maths/angles.maths";
+import { Vector2 } from "@morleydev/pauper-core/maths/vector.maths";
 
 export type RotateProps = {
 	radians: Radian;

@@ -1,11 +1,11 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Blit, FrameCommand } from '@morleydev/pauper-render/render-frame.model';
-import { Point2, Rectangle } from '@morleydev/pauper-core/models/shapes.model';
+import { Blit, FrameCommand } from "@morleydev/pauper-render/render-frame.model";
+import { Point2, Rectangle } from "@morleydev/pauper-core/models/shapes.model";
 
-import { Instance } from './Instance';
-import { RGB } from '@morleydev/pauper-core/models/colour.model';
-import { shallowCompare } from '../util/shallowCompare';
+import { Instance } from "./Instance";
+import { RGB } from "@morleydev/pauper-core/models/colour.model";
+import { shallowCompare } from "../util/shallowCompare";
 
 export type BlitProps = {
 	image: string;

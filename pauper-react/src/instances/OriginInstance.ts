@@ -1,9 +1,9 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { FrameCommand, Origin } from '@morleydev/pauper-render/render-frame.model';
+import { FrameCommand, Origin } from "@morleydev/pauper-render/render-frame.model";
 
-import { HasChildrenInstance } from './HasChildrenInstance';
-import { Vector2 } from '@morleydev/pauper-core/maths/vector.maths';
+import { HasChildrenInstance } from "./HasChildrenInstance";
+import { Vector2 } from "@morleydev/pauper-core/maths/vector.maths";
 
 export type OriginProps = {
 	coords: Vector2;

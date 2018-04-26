@@ -1,10 +1,10 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { FrameCommand, Scale } from '@morleydev/pauper-render/render-frame.model';
+import { FrameCommand, Scale } from "@morleydev/pauper-render/render-frame.model";
 
-import { HasChildrenInstance } from './HasChildrenInstance';
-import { Vector2 } from '@morleydev/pauper-core/maths/vector.maths';
-import { shallowCompare } from '../util/shallowCompare';
+import { HasChildrenInstance } from "./HasChildrenInstance";
+import { Vector2 } from "@morleydev/pauper-core/maths/vector.maths";
+import { shallowCompare } from "../util/shallowCompare";
 
 export type ScaleProps = {
 	by: Vector2;

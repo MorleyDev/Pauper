@@ -1,11 +1,11 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Clear, FrameCollection } from '@morleydev/pauper-render/render-frame.model';
+import { Clear, FrameCollection } from "@morleydev/pauper-render/render-frame.model";
 
-import { HasChildrenInstance } from './HasChildrenInstance';
-import { RGB } from '@morleydev/pauper-core/models/colour.model';
-import { compareRGB } from '../util/compareRGB';
-import { shallowCompare } from '../util/shallowCompare';
+import { HasChildrenInstance } from "./HasChildrenInstance";
+import { RGB } from "@morleydev/pauper-core/models/colour.model";
+import { compareRGB } from "../util/compareRGB";
+import { shallowCompare } from "../util/shallowCompare";
 
 export type ClearProps = {
 	colour?: RGB;
