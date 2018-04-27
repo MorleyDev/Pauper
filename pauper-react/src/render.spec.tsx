@@ -218,5 +218,82 @@ test("render/jsx/render", test => {
 
 		test.end();
 	});
+
+	test.test("renderTarget nested", test => {
+		let setY = (y: number) => { };
+		let setZ = (z: number) => { };
+
+		class TestStateComponent extends React.Component<{ }, { y: number, z: number }> {
+			public state = { y: 5, z: -25 };
+
+			componentWillMount() {
+				setZ = z => this.setState(state => ({ ...state, z }));
+				setY = y => this.setState(state => ({ ...state, y }));
+			}
+
+			render() {
+				return (
+					<rendertarget id="test_rt" dst={Rectangle(25, 25, 100, 100)}>
+						<rendertarget id="inner_rt" dst={Rectangle(2, this.state.y, 8, 9)}>
+							<blit dst={Rectangle(-25, this.state.z, 100, 50)} image="test_image.png"></blit>
+						</rendertarget>
+					</rendertarget>
+				);
+			}
+		}
+
+		const renderer = render(
+			<clear colour={RGB(0, 0, 0)}>
+				<TestStateComponent />
+			</clear>
+		);
+
+		const frame1 = renderer();
+		test.deepEqual(frame1, [[
+			Clear(RGB(0, 0, 0)),
+			[
+				RenderTarget("test_rt", Rectangle(25, 25, 100, 100), [
+					RenderTarget("inner_rt", Rectangle(2, 5, 8, 9), [
+						Blit("test_image.png", Rectangle(-25, -25, 100, 50))
+					])
+				])
+			]]
+		]);
+
+		const frame2 = renderer();
+		test.deepEqual(frame2, [[
+			Clear(RGB(0, 0, 0)),
+			[
+				RenderTarget("test_rt", Rectangle(25, 25, 100, 100))
+			]
+		]]);
+
+		setZ(25);
+		const frame3 = renderer();
+		test.deepEqual(frame3, [[
+			Clear(RGB(0, 0, 0)),
+			[
+				RenderTarget("test_rt", Rectangle(25, 25, 100, 100), [
+					RenderTarget("inner_rt", Rectangle(2, 5, 8, 9), [
+						Blit("test_image.png", Rectangle(-25, 25, 100, 50))
+					])
+				])
+			]]
+		]);
+
+		setY(25);
+		const frame4 = renderer();
+		test.deepEqual(frame4, [[
+			Clear(RGB(0, 0, 0)),
+			[
+				RenderTarget("test_rt", Rectangle(25, 25, 100, 100), [
+					RenderTarget("inner_rt", Rectangle(2, 25, 8, 9))
+				])
+			]]
+		]);
+
+		test.end();
+	});
+
 	test.end();
 });

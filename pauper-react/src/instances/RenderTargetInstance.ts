@@ -18,11 +18,10 @@ export default class RenderTargetInstance extends HasChildrenInstance<RenderTarg
 	frame?: FrameCommand;
 
 	invalidate(fromChild: boolean) {
-		if (!fromChild) {
-			this.parent && this.parent.invalidate(true);
-		} else {
+		if (fromChild) {
 			this.frame = undefined;
 		}
+		this.parent && this.parent.invalidate(true);
 	}
 
 	draw(): FrameCommand {
