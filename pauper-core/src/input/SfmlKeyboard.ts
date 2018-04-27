@@ -1,9 +1,9 @@
-import { Observable } from "rxjs/Observable";
+import { SfmlEventType, SfmlKeyboardEvent, sfml } from "../engine/sfml";
+import { filter, map } from "rxjs/operators";
 
 import { Key } from "../models/keys.model";
 import { Keyboard } from "./Keyboard";
-import { sfml, SfmlEventType, SfmlKeyboardEvent } from "../engine/sfml";
-import { map, filter } from "rxjs/operators";
+import { Observable } from "rxjs";
 
 export class SfmlKeyboard implements Keyboard {
 	public keyDown(): Observable<Key> {

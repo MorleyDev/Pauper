@@ -1,5 +1,4 @@
-import { Observable } from "rxjs/Observable";
-import { Subject } from "rxjs/Subject";
+import { Observable, Subject } from "rxjs";
 
 import { Key } from "../models/keys.model";
 import { Keyboard } from "./Keyboard";

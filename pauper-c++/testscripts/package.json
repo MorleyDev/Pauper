@@ -9,11 +9,11 @@
         "webpack-cli": "2.0.15"
     },
     "dependencies": {
-        "@morleydev/pauper-core": "../../pauper-core/dist",
-        "@morleydev/pauper-render": "../../pauper-render/dist",
-        "@morleydev/pauper-react": "../../pauper-react/dist",
+        "@morleydev/pauper-core": "file:../../pauper-core/dist",
+        "@morleydev/pauper-render": "file:../../pauper-render/dist",
+        "@morleydev/pauper-react": "file:../../pauper-react/dist",
         "@types/react": "16.3.12",
-        "rxjs": "5.5.10",
+        "rxjs": "6.0.0",
         "react": "16.3.2"
     }
 }

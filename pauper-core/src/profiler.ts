@@ -1,5 +1,4 @@
-import { Observable } from "rxjs/Observable";
-import { using } from "rxjs/observable/using";
+import { Observable, using } from "rxjs";
 
 import { isBrowser } from "./utility/is-browser";
 import { isProduction } from "./utility/is-production";

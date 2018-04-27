@@ -4,11 +4,10 @@ import { HasChildrenInstance } from "./HasChildrenInstance";
 export default class ContainerInstance extends HasChildrenInstance<undefined> {
 	children: any[] = [];
 
-	invalidate() {
-	}
+	invalidate() { }
 
 	draw(): FrameCollection {
-		return this.children.map(child => child.draw());	
+		return this.children.map(child => child.draw());
 	}
 
 	shouldInvalidate(originalProps: undefined, newProps: undefined): boolean {

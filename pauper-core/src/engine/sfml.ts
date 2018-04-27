@@ -1,12 +1,12 @@
-import { Shape2, Rectangle, Circle, Text2, Point2 } from "../models/shapes.model";
-import { RGBA, RGB, RGBAo } from "../models/colour.model";
-import { NamedImageAsset, NamedSoundEffectAsset, NamedMusicAsset } from "../assets/asset.model";
-import { Vector2 } from "../maths/vector.maths";
+import { Circle, Point2, Rectangle, Shape2, Text2 } from "../models/shapes.model";
 import { Degree, Radian } from "../maths/angles.maths";
+import { NamedImageAsset, NamedMusicAsset, NamedSoundEffectAsset } from "../assets/asset.model";
+import { Observable, ReplaySubject } from "rxjs";
+import { RGB, RGBA, RGBAo } from "../models/colour.model";
+
 import { Key } from "../models/keys.model";
 import { MouseButton } from "../models/mouse-button.model";
-import { ReplaySubject } from "rxjs/ReplaySubject";
-import { Observable } from "rxjs/Observable";
+import { Vector2 } from "../maths/vector.maths";
 
 export enum VsyncStatus {
 	Enabled,

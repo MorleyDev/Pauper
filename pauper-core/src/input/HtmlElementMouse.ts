@@ -1,10 +1,9 @@
-import { Observable } from "rxjs/Observable";
-import { fromEvent } from "rxjs/observable/fromEvent";
+import { Observable, fromEvent } from "rxjs";
 import { filter, map } from "rxjs/operators";
 
+import { Mouse } from "./Mouse";
 import { MouseButton } from "../models/mouse-button.model";
 import { Point2Type } from "../models/point/point.model.type";
-import { Mouse } from "./Mouse";
 
 export class HtmlElementMouse implements Mouse {
 	constructor(private element: HTMLElement) {

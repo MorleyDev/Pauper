@@ -1,5 +1,4 @@
-import { Subject } from "rxjs/Subject";
-import { Observable } from "rxjs/Observable";
+import { Observable, Subject } from "rxjs";
 
 const receiveHotReload$ = new Subject<string>();
 if (typeof ENGINE_Reloaded !== "undefined") {

@@ -1,12 +1,7 @@
 import * as React from "react";
 
-import { map, scan, tap } from "rxjs/operators";
-
-import { Observable } from "rxjs/Observable";
-import { Subject } from "rxjs/Subject";
-import { distinctUntilChanged } from "rxjs/operators/distinctUntilChanged";
-import { from } from "rxjs/observable/from";
-import { merge } from "rxjs/observable/merge";
+import { Observable, Subject, from, merge } from "rxjs";
+import { distinctUntilChanged, map, scan, tap } from "rxjs/operators";
 
 export type ObservableProperties<T> = {
 	[x in keyof T]: Observable<T[x]>;

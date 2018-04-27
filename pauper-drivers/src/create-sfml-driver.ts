@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { Driver } from "./driver";
 import { SfmlAssetLoader } from "@morleydev/pauper-core/assets/sfml-asset-loader.service";
+import { SfmlAudioService } from "@morleydev/pauper-core/audio/sfml-audio.service";
 import { SfmlKeyboard } from "@morleydev/pauper-core/input/SfmlKeyboard";
 import { SfmlMouse } from "@morleydev/pauper-core/input/SfmlMouse";
 import { SfmlSystem } from "@morleydev/pauper-core/input/SfmlSystem";
@@ -15,10 +16,12 @@ export const createSfmlDriver = (): Driver => {
 		mouse: new SfmlMouse(),
 		system: new SfmlSystem()
 	};
+	const audio = new SfmlAudioService();
 
 	return ({
 		assets,
 		input,
+		audio,
 		start: elem => {
 			const renderer = render(elem);
 			let cancel = requestAnimationFrame(function draw() {

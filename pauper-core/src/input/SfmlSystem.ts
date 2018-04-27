@@ -1,8 +1,8 @@
+import { Observable, Subject } from "rxjs";
+import { SfmlEventType, sfml } from "../engine/sfml";
+import { filter, map } from "rxjs/operators";
+
 import { System } from "./System";
-import { Observable } from "rxjs/Observable";
-import { Subject } from "rxjs/Subject";
-import { map, filter } from "rxjs/operators";
-import { sfml, SfmlEventType } from "../engine/sfml";
 
 export class SfmlSystem implements System {
     constructor() {

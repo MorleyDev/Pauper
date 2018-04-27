@@ -62,11 +62,11 @@ class GameApp extends React.Component<{}, GameAppState> {
 	public render() {
 		return (
 			<clear colour={this.state.background}>
-				<rendertarget id="lines" dst={Rectangle(0, 0, 640, 480)} size={Vector2(640, 480)}>
+				{/*<rendertarget id="lines" dst={Rectangle(0, 0, 640, 480)} size={Vector2(640, 480)}>*/}
 					<clear colour={RGB(0, 0, 0)}>
 						{this.state.lines.map((line, index) => <stroke key={index} shape={line} colour={RGB(255, 255, 255)} />)}
 					</clear>
-				</rendertarget>
+				{/*</rendertarget>*/}
 				<>
 					{this.state.startPoint != null
 						&& this.state.tempEndPoint != null

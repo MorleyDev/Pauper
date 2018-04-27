@@ -1,10 +1,9 @@
-import { map, filter, tap } from "rxjs/operators";
-import { Observable } from "rxjs/Observable";
-import { Subject } from "rxjs/Subject";
+import { Observable, Subject } from "rxjs";
+import { filter, map, tap } from "rxjs/operators";
 
+import { Mouse } from "./Mouse";
 import { MouseButton } from "../models/mouse-button.model";
 import { Point2Type } from "../models/point/point.model.type";
-import { Mouse } from "./Mouse";
 
 export class SubjectMouse implements Mouse {
 	public mouseDown$ = new Subject<[MouseButton, Point2Type]>();

@@ -22,9 +22,9 @@
     "typescript": "2.8.3"
   },
   "dependencies": {
-    "@morleydev/pauper-core": "../pauper-core/dist",
-    "@morleydev/pauper-render": "../pauper-render/dist",
-    "@morleydev/pauper-react": "../pauper-react/dist",
+    "@morleydev/pauper-core": "file:../pauper-core/dist",
+    "@morleydev/pauper-render": "file:../pauper-render/dist",
+    "@morleydev/pauper-react": "file:../pauper-react/dist",
     "@types/react": "^16.3.13",
     "react": "^16.3.2"
   }

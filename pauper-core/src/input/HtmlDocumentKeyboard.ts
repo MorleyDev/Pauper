@@ -1,9 +1,8 @@
-import { Observable } from "rxjs/Observable";
-import { fromEvent } from "rxjs/observable/fromEvent";
-import { map } from "rxjs/operators";
+import { Observable, fromEvent } from "rxjs";
 
 import { Key } from "../models/keys.model";
 import { Keyboard } from "./Keyboard";
+import { map } from "rxjs/operators";
 
 export class HtmlDocumentKeyboard implements Keyboard {
 	constructor(private document: Document) {

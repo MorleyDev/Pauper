@@ -22,12 +22,13 @@
     "typescript": "2.8.3"
   },
   "dependencies": {
-    "@morleydev/pauper-core": "../pauper-core/dist",
-    "@morleydev/pauper-render": "../pauper-render/dist",
+    "@morleydev/pauper-core": "file:../pauper-core/dist",
+    "@morleydev/pauper-render": "file:../pauper-render/dist",
     "@types/react": "^16.3.12",
     "@types/react-test-renderer": "^16.0.1",
     "react": "^16.3.2",
     "react-reconciler": "^0.10.0",
-    "react-test-renderer": "^16.3.2"
+    "react-test-renderer": "^16.3.2",
+    "rxjs": "^6.0.0"
   }
 }

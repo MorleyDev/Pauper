@@ -5,6 +5,7 @@ import { HtmlDocumentKeyboard } from "@morleydev/pauper-core/input/HtmlDocumentK
 import { HtmlElementMouse } from "@morleydev/pauper-core/input/HtmlElementMouse";
 import { HtmlWindowSystem } from "@morleydev/pauper-core/input/HtmlWindowSystem";
 import { WebAssetLoader } from "@morleydev/pauper-core/assets/web-asset-loader.service";
+import { WebAudioService } from "@morleydev/pauper-core/audio/web-audio.service";
 import { render } from "@morleydev/pauper-react/render";
 import { renderToCanvas } from "@morleydev/pauper-render/render-to-canvas.func";
 
@@ -23,10 +24,12 @@ export const createWebDriver = (): Driver => {
 		mouse: new HtmlElementMouse(canvas),
 		system: new HtmlWindowSystem(window)
 	};
+	const audio = new WebAudioService();
 
 	return ({
 		assets,
 		input,
+		audio,
 		start: elem => {
 			const renderer = render(elem);
 			let cancel = requestAnimationFrame(function draw() {

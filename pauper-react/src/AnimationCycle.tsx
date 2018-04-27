@@ -1,12 +1,9 @@
 import * as React from "react";
 
+import { Observable, combineLatest, interval, of } from "rxjs";
 import { distinctUntilChanged, map, switchMap, switchMapTo } from "rxjs/operators";
 
-import { Observable } from "rxjs/Observable";
-import { combineLatest } from "rxjs/observable/combineLatest";
 import { connectStream } from "./connect";
-import { interval } from "rxjs/observable/interval";
-import { of } from "rxjs/observable/of";
 
 export type AnimationCycleProps = {
 	readonly framerate: number;
