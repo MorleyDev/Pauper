@@ -8,6 +8,7 @@ import { SfmlMouse } from "@morleydev/pauper-core/input/SfmlMouse";
 import { SfmlSystem } from "@morleydev/pauper-core/input/SfmlSystem";
 import { render } from "@morleydev/pauper-react/render";
 import { renderToSfml } from "@morleydev/pauper-render/render-to-sfml.func";
+import { sfml } from "@morleydev/pauper-core/engine/sfml";
 
 export const createSfmlDriver = (): Driver => {
 	const assets = new SfmlAssetLoader();
@@ -29,6 +30,8 @@ export const createSfmlDriver = (): Driver => {
 				renderToSfml(assets, frames);
 				cancel = requestAnimationFrame(draw);
 			});
+			sfml.input.start();
+
 			return () => cancelAnimationFrame(cancel);
 		}
 	});
