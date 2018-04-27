@@ -3,6 +3,7 @@ dist/
 out/
 yarn.lock
 node_modules
+*.log
 
 # Testing
 coverage

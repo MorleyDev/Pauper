@@ -1,5 +1,5 @@
 {
-  "name": "@morleydev/pauper-core",
+  "name": "@morleydev/pauper-drivers",
   "version": "1.1.2",
   "description": "",
   "scripts": {
@@ -24,6 +24,8 @@
   "dependencies": {
     "@morleydev/pauper-core": "../pauper-core/dist",
     "@morleydev/pauper-render": "../pauper-render/dist",
-    "@morleydev/pauper-react": "../pauper-react/dist"
+    "@morleydev/pauper-react": "../pauper-react/dist",
+    "@types/react": "^16.3.13",
+    "react": "^16.3.2"
   }
 }
