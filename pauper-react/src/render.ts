@@ -24,7 +24,7 @@ declare global {
 			fill: { key?: string | number; shape: Shape2; colour: RGB | RGBA };
 			stroke: { key?: string | number; shape: Shape2; colour: RGB | RGBA };
 			blit: { key?: string | number; image: string; dst: Point2 | Rectangle; src?: Rectangle };
-			rendertarget: { key?: string | number; id: string; dst: Rectangle; size?: Vector2; children?: any };
+			rendertarget: { key?: string | number; id?: string; dst: Rectangle; size?: Vector2; children?: any };
 			origin: { key?: string | number; coords: Vector2; children?: any };
 			rotate: { key?: string | number; radians: Radian; children?: any };
 			scale: { key?: string | number; by: Vector2; children?: any };

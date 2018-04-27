@@ -7,15 +7,27 @@ import { HasChildrenInstance } from "./HasChildrenInstance";
 import { RGB } from "@morleydev/pauper-core/models/colour.model";
 import { Vector2 } from "@morleydev/pauper-core/maths/vector.maths";
 import { shallowCompare } from "../util/shallowCompare";
+import { uniqueId } from "@morleydev/pauper-core/utility/unique-id";
 
 export type RenderTargetProps = {
-	id: string;
-	dst: Rectangle;
-	size?: Vector2;
+	readonly id?: string;
+	readonly dst: Rectangle;
+	readonly size?: Vector2;
 };
 
 export default class RenderTargetInstance extends HasChildrenInstance<RenderTargetProps> {
-	frame?: FrameCommand;
+	private frame?: FrameCommand;
+	private id: string;
+
+	constructor(public name: string, public props: RenderTargetProps) {
+		super(name, props);
+		this.id = props.id || uniqueId().toString();
+	}
+
+	replaceProps(props: RenderTargetProps) {
+		this.id = props.id || uniqueId().toString();
+		super.replaceProps(props);
+	}
 
 	invalidate(fromChild: boolean) {
 		if (fromChild) {
@@ -26,10 +38,10 @@ export default class RenderTargetInstance extends HasChildrenInstance<RenderTarg
 
 	draw(): FrameCommand {
 		if (this.frame == null) {
-			this.frame = RenderTarget(this.props.id, this.props.dst, this.children.map(child => child.draw()), this.props.size);
+			this.frame = RenderTarget(this.id, this.props.dst, this.children.map(child => child.draw()), this.props.size);
 			return this.frame;
 		} else {
-			return RenderTarget(this.props.id, this.props.dst);
+			return RenderTarget(this.id, this.props.dst);
 		}
 	}
 
