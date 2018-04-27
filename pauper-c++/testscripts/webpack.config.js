@@ -7,8 +7,7 @@ module.exports = {
     mode: isProd ? "production": "development",
     devtool: isProd ? undefined : "source-map",
     entry: {
-        "simple": "./simple.ts",
-        "react": "./react.tsx"
+        "index": "./index.tsx"
     },
     output: {
         filename: "[name].js"

@@ -4,6 +4,7 @@ import { Driver } from "./driver";
 import { HtmlDocumentKeyboard } from "@morleydev/pauper-core/input/HtmlDocumentKeyboard";
 import { HtmlElementMouse } from "@morleydev/pauper-core/input/HtmlElementMouse";
 import { HtmlWindowSystem } from "@morleydev/pauper-core/input/HtmlWindowSystem";
+import { Vector2 } from "@morleydev/pauper-core/maths/vector.maths";
 import { WebAssetLoader } from "@morleydev/pauper-core/assets/web-asset-loader.service";
 import { WebAudioService } from "@morleydev/pauper-core/audio/web-audio.service";
 import { render } from "@morleydev/pauper-react/render";
@@ -38,6 +39,11 @@ export const createWebDriver = (): Driver => {
 				cancel = requestAnimationFrame(draw);
 			});
 			return () => cancelAnimationFrame(cancel);
+		},
+		close: () => { },
+		resize: (size: Vector2) => {
+			canvas.width = size.x;
+			canvas.height = size.y;
 		}
 	});
 };

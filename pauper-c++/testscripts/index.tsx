@@ -1,3 +1,5 @@
+import "@morleydev/pauper-react/render";
+
 import * as React from "react";
 
 import { Line2, Point2, Rectangle } from "@morleydev/pauper-core/models/shapes.model";
@@ -5,28 +7,15 @@ import { Line2, Point2, Rectangle } from "@morleydev/pauper-core/models/shapes.m
 import { FrameCollection } from "@morleydev/pauper-render/render-frame.model";
 import { MouseButton } from "@morleydev/pauper-core/models/mouse-button.model";
 import { RGB } from "@morleydev/pauper-core/models/colour.model";
-import { SfmlAssetLoader } from "@morleydev/pauper-core/assets/sfml-asset-loader.service";
-import { SfmlAudioService } from "@morleydev/pauper-core/audio/sfml-audio.service";
-import { SfmlKeyboard } from "@morleydev/pauper-core/input/SfmlKeyboard";
-import { SfmlMouse } from "@morleydev/pauper-core/input/SfmlMouse";
-import { SfmlSystem } from "@morleydev/pauper-core/input/SfmlSystem";
 import { Vector2 } from "@morleydev/pauper-core/maths/vector.maths";
+import { createDriver } from "@morleydev/pauper-drivers/create-driver";
 import { filter } from "rxjs/operators";
-import { render } from "@morleydev/pauper-react/render";
-import { renderToSfml } from "@morleydev/pauper-render/render-to-sfml.func";
-import { sfml } from "@morleydev/pauper-core/engine/sfml";
 
-const loader = new SfmlAssetLoader();
-const audio = new SfmlAudioService();
-const mouse = new SfmlMouse();
-const keyboard = new SfmlKeyboard();
-const system = new SfmlSystem();
+const drivers = createDriver();
 
-system.closed().subscribe(() => sfml.close());
+drivers.input.system.closed().subscribe(() => drivers.close());
 
-sfml.screen.setSize(Vector2(640, 480));
-sfml.screen.setView(Rectangle(0, 0, 640, 480), 0);
-sfml.input.start();
+drivers.resize(Vector2(640, 480));
 
 type GameAppState = {
 	readonly startPoint: Point2 | null;
@@ -44,17 +33,17 @@ class GameApp extends React.Component<{}, GameAppState> {
 	};
 
 	public componentWillMount() {
-		mouse.mouseDown(MouseButton.Left).subscribe(pos => {
+		drivers.input.mouse.mouseDown(MouseButton.Left).subscribe(pos => {
 			this.setState(state => ({ startPoint: pos, tempEndPoint: pos }));
 		});
-		mouse.mouseUp(MouseButton.Left).subscribe(pos => {
+		drivers.input.mouse.mouseUp(MouseButton.Left).subscribe(pos => {
 			this.setState(state => ({
 				startPoint: null,
 				tempEndPoint: null,
 				lines: [...state.lines, Line2(state.startPoint || pos, pos)]
 			}));
 		});
-		mouse.mouseMove()
+		drivers.input.mouse.mouseMove()
 			.pipe(filter(_ => this.state.startPoint != null))
 			.subscribe(pos => this.setState(state => ({ ...state, tempEndPoint: pos })));
 	}
@@ -62,11 +51,11 @@ class GameApp extends React.Component<{}, GameAppState> {
 	public render() {
 		return (
 			<clear colour={this.state.background}>
-				{/*<rendertarget id="lines" dst={Rectangle(0, 0, 640, 480)} size={Vector2(640, 480)}>*/}
+				<rendertarget id="lines" dst={Rectangle(0, 0, 640, 480)} size={Vector2(640, 480)}>
 					<clear colour={RGB(0, 0, 0)}>
 						{this.state.lines.map((line, index) => <stroke key={index} shape={line} colour={RGB(255, 255, 255)} />)}
 					</clear>
-				{/*</rendertarget>*/}
+				</rendertarget>
 				<>
 					{this.state.startPoint != null
 						&& this.state.tempEndPoint != null
@@ -81,9 +70,4 @@ class GameApp extends React.Component<{}, GameAppState> {
 	}
 }
 
-const renderer = render(<GameApp />);
-requestAnimationFrame(function draw() {
-	const frame = renderer();
-	renderToSfml(loader, frame);
-	requestAnimationFrame(draw);
-});
+drivers.start(<GameApp />);
