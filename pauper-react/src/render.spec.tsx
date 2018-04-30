@@ -16,9 +16,11 @@ test("render/jsx/render", test => {
 				<blit dst={Rectangle(-25, -25, 100, 50)} image="test_image.png" />
 				<scale by={Vector2(2, 3)}>
 					<stroke shape={Circle(0, 0, 25)} colour={RGBA(100, 200, 100, 0.5)} />
-					<rotate radians={0.2}>
-						<fill shape={Circle(0, 0, 25)} colour={RGBA(100, 200, 100, 0.5)} />
-					</rotate>
+					<group>
+						<rotate radians={0.2}>
+							<fill shape={Circle(0, 0, 25)} colour={RGBA(100, 200, 100, 0.5)} />
+						</rotate>
+					</group>
 				</scale>
 				<origin coords={Vector2(20, -10)}>
 					<>
@@ -40,9 +42,11 @@ test("render/jsx/render", test => {
 				Blit("test_image.png", Rectangle(-25, -25, 100, 50)),
 				Scale(Vector2(2, 3), [
 					Stroke(Circle(0, 0, 25), RGBA(100, 200, 100, 0.5)),
-					Rotate(0.2, [
-						Fill(Circle(0, 0, 25), RGBA(100, 200, 100, 0.5)),
-					]),
+					[
+						Rotate(0.2, [
+							Fill(Circle(0, 0, 25), RGBA(100, 200, 100, 0.5)),
+						])
+					]
 				]),
 				Origin(Vector2(20, -10), [
 					Stroke(Circle(0, 0, 25), RGBA(100, 200, 100, 0.5)),
@@ -223,7 +227,7 @@ test("render/jsx/render", test => {
 		let setY = (y: number) => { };
 		let setZ = (z: number) => { };
 
-		class TestStateComponent extends React.Component<{ }, { y: number, z: number }> {
+		class TestStateComponent extends React.Component<{}, { y: number, z: number }> {
 			public state = { y: 5, z: -25 };
 
 			componentWillMount() {

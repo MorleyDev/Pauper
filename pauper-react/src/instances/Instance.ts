@@ -5,11 +5,12 @@ import { RGB, RGBA } from "@morleydev/pauper-core/models/colour.model";
 
 import { Shape2 } from "@morleydev/pauper-core/models/shapes.model";
 import { shallowCompare } from "../util/shallowCompare";
+import { FrameRendererHooks } from "../FrameRendererHooks";
 
 export abstract class Instance<T> {
     parent?: Instance<T>;
 
-    constructor(public name: string, public props: T) {
+    constructor(public name: string, public props: T, public hooks: FrameRendererHooks) {
     }
 
     invalidate(fromChild: boolean) {
@@ -27,4 +28,6 @@ export abstract class Instance<T> {
     abstract draw(): FrameCommand | FrameCollection;
 
     abstract shouldInvalidate(originalProps: T, newProps: T): boolean;
+
+    dispose() { }
 }

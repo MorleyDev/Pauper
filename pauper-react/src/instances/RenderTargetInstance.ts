@@ -8,6 +8,7 @@ import { RGB } from "@morleydev/pauper-core/models/colour.model";
 import { Vector2 } from "@morleydev/pauper-core/maths/vector.maths";
 import { shallowCompare } from "../util/shallowCompare";
 import { uniqueId } from "@morleydev/pauper-core/utility/unique-id";
+import { FrameRendererHooks } from "../FrameRendererHooks";
 
 export type RenderTargetProps = {
 	readonly id?: string;
@@ -17,16 +18,14 @@ export type RenderTargetProps = {
 
 export default class RenderTargetInstance extends HasChildrenInstance<RenderTargetProps> {
 	private frame?: FrameCommand;
-	private id: string;
-
-	constructor(public name: string, public props: RenderTargetProps) {
-		super(name, props);
-		this.id = props.id || uniqueId().toString();
-	}
+	private id: string = this.props.id || uniqueId().toString();
 
 	replaceProps(props: RenderTargetProps) {
-		this.id = props.id || uniqueId().toString();
-		super.replaceProps(props);
+		if (props.id !== this.props.id) {
+			this.hooks.onDestroyRenderTarget(this.id);
+			this.id = props.id || uniqueId().toString();
+		}
+		super.replaceProps({ ...props });
 	}
 
 	invalidate(fromChild: boolean) {
@@ -49,5 +48,9 @@ export default class RenderTargetInstance extends HasChildrenInstance<RenderTarg
 		return lhs.id !== rhs.id
 			|| !shallowCompare(lhs.dst, rhs.dst)
 			|| !shallowCompare(lhs.size, rhs.size);
+	}
+
+	dispose() {
+		this.hooks.onDestroyRenderTarget(this.id);
 	}
 }

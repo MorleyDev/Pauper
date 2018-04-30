@@ -26,7 +26,11 @@ export const createSfmlDriver = (): Driver => {
 		input,
 		audio,
 		start: elem => {
-			const renderer = render(elem);
+			const renderer = render(elem, {
+				onDestroyRenderTarget(id) {
+					sfml.renderTarget.destroy(id);
+				}
+			});
 			let cancel = requestAnimationFrame(function draw() {
 				const frames = renderer();
 				renderToSfml(assets, frames);

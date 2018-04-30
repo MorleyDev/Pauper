@@ -16,6 +16,12 @@ pushd .\pauper-react
 	call yarn run compile
 popd
 
+pushd .\pauper-drivers
+	del node_modules
+	call yarn
+	call yarn run compile
+popd
+
 pushd .\pauper-c++
 	pushd testscripts
 		del node_modules

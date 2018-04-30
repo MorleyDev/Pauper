@@ -20,7 +20,9 @@ export abstract class HasChildrenInstance<T> extends Instance<T> {
 
 	// Remove a child from the existing list of children
 	removeChild(child: Instance<T>) {
-		this.children = this.children.filter(c => c !== child);
+		const targetIndex = this.children.findIndex(c => c === child);
+		this.children[targetIndex].dispose();
+		this.children.splice(targetIndex, 1);
 		this.invalidate(false);
 	}
 
@@ -28,5 +30,9 @@ export abstract class HasChildrenInstance<T> extends Instance<T> {
 	insertBefore(child: Instance<T>, childBefore: Instance<T>) {
 		this.children.splice(this.children.indexOf(childBefore), 0, child);
 		this.invalidate(false);
+	}
+
+	dispose() {
+		this.children.forEach(child => child.dispose());
 	}
 }

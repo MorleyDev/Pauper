@@ -514,8 +514,15 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 		const auto h = ctx->getargn(2);
 
 		const auto found = sfml.renderTextures.find(key);
+
 		if (found != sfml.renderTextures.end()) {
-			sfml.renderTextures.erase(found);
+			const auto twh = found->second->getSize();
+			if (w == twh.x && h == twh.y) {
+				ctx->push(true);
+				return true;
+			} else { 
+				sfml.renderTextures.erase(found);
+			}
 		}
 
 		auto texture = std::make_shared<sf::RenderTexture>();
@@ -527,6 +534,18 @@ template<typename TEngine> void _attachSfml(TEngine &engine, Sfml &sfml) {
 		ctx->push(result);
 		return true;
 	}, 3);
+	engine.setGlobalFunction("SFML_DestroyRenderTexture", [&sfml](TEngine* ctx) {
+		const auto key = ctx->getargstr(0);
+		const auto found = sfml.renderTextures.find(key);
+		if (found == sfml.renderTextures.end()) {
+			ctx->push(false);
+			return true;
+		}
+		sfml.renderTextures.erase(found);
+		ctx->push(true);
+		return true;
+	}, 1);
+
 	engine.setGlobalFunction("SFML_BlitRenderTexture", [&sfml](TEngine* ctx) {
 		const auto key = ctx->getargstr(0);
 		const auto srcX = ctx->getargn(1);

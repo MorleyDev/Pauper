@@ -121,6 +121,9 @@ export const sfml = {
 			}
 			sfmlRenderTextures[key] = Rectangle(0, 0, x, y);
 		},
+		destroy(key: string) {
+			SFML_DestroyRenderTexture(key);
+		},
 		push(key: string) {
 			SFML_PushRenderTexture(key);
 		},

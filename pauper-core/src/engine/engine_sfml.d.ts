@@ -15,6 +15,7 @@ declare function SFML_SetView_FloatRect(x: number, y: number, width: number, hei
 declare function SFML_SetView_VectorVector(cx: number, cy: number, width: number, height: number, rotation: number): void;
 
 declare function SFML_CreateRenderTexture(key: string, width: number, height: number): boolean;
+declare function SFML_DestroyRenderTexture(key: string): boolean;
 declare function SFML_PushRenderTexture(key: string): boolean;
 declare function SFML_PopRenderTexture(): number;
 declare function SFML_BlitRenderTexture(key: string, srcX: number, srcY: number, srcWidth: number, srcHeight: number, dstX: number, dstY: number, dstWidth: number, dstHeight: number): void;
